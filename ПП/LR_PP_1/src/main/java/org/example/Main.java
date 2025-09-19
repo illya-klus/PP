@@ -14,6 +14,15 @@ class Main {
         short num = scan.nextShort();
 
         LukaNumber[] ArrayOfLukaNums = getLukaNumbersToNum(num);
+
+        int i = 0;
+        for(LukaNumber n : ArrayOfLukaNums){
+            if(i % 10 == 0) System.out.println("\n");
+            System.out.print(n.getNum() + " ");
+            i++;
+        }
+        System.out.println("\n");
+
         LukaNumber[] result = showOneSmallerThanSquere(ArrayOfLukaNums);
 
         if(result == null) {
