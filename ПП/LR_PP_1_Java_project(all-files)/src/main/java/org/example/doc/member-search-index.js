@@ -1,0 +1,1 @@
+memberSearchIndex = [{"p":"org.example","c":"LukaNumber","l":"getNum()"},{"p":"org.example","c":"LukaNumber","l":"index"},{"p":"org.example","c":"LukaNumber","l":"LukaNumber(short)","u":"%3Cinit%3E(short)"},{"p":"org.example","c":"LukaNumber","l":"num"}];updateSearchResults();

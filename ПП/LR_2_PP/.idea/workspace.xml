@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c0419a4f-d5e2-4b96-be09-53087f12f5c1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../LR_3_PP/src/main/java/Design/Colors.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LR_3_PP/src/main/java/Menu/Menu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LR_3_PP/src/main/java/app/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LR_3_PP/src/main/java/battle/Duel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LR_3_PP/src/main/java/battle/TeamBattle.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LR_3_PP/src/main/java/droids/base/Droid.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LR_3_PP/src/main/java/droids/types/DroidHealer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LR_3_PP/src/main/java/droids/types/DroidMag.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LR_3_PP/src/main/java/droids/types/DroidShooter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LR_3_PP/src/main/java/droids/types/DroidSwarder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LR_3_PP/src/main/java/workWithFiles/BattleReader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LR_3_PP/src/main/java/workWithFiles/BattleRecorder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../ЧМ/lr1_CM/src/main/java/org/project/TaskFunction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lr2pp/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/LukaNumber.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/allclasses-index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/allpackages-index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/element-list" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/help-doc.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/index-all.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/legal/COPYRIGHT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/legal/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/legal/dejavufonts.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/legal/jquery.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/legal/jqueryUI.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/member-search-index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/module-search-index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/org/example/LukaNumber.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/org/example/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/org/example/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/overview-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/package-search-index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/copy.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/fonts/DejaVuLGCSans-Bold.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/fonts/DejaVuLGCSans-Bold.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/fonts/DejaVuLGCSans-BoldOblique.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/fonts/DejaVuLGCSans-BoldOblique.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/fonts/DejaVuLGCSans-Oblique.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/fonts/DejaVuLGCSans-Oblique.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/fonts/DejaVuLGCSans.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/fonts/DejaVuLGCSans.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/fonts/DejaVuLGCSansMono-Bold.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/fonts/DejaVuLGCSansMono-Bold.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/fonts/DejaVuLGCSansMono-BoldOblique.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/fonts/DejaVuLGCSansMono-BoldOblique.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/fonts/DejaVuLGCSansMono-Oblique.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/fonts/DejaVuLGCSansMono-Oblique.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/fonts/DejaVuLGCSansMono.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/fonts/DejaVuLGCSansMono.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/fonts/DejaVuLGCSerif-Bold.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/fonts/DejaVuLGCSerif-Bold.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/fonts/DejaVuLGCSerif-BoldItalic.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/fonts/DejaVuLGCSerif-BoldItalic.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/fonts/DejaVuLGCSerif-Italic.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/fonts/DejaVuLGCSerif-Italic.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/fonts/DejaVuLGCSerif.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/fonts/DejaVuLGCSerif.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/fonts/dejavu.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/glass.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/jquery-ui.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/link.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/stylesheet.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/resource-files/x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/script-files/jquery-3.7.1.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/script-files/jquery-ui.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/script-files/script.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/script-files/search-page.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/script-files/search.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/search.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/tag-search-index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LR_PP_1/src/main/java/org/example/doc/type-search-index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Звіт_лр1_пп_КлусІлля.docx" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="32sGz9u9wUtCupFqjeDV4lxGq1T" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/klasi/Desktop/Нова папка/Університет/ПП/LR_2_PP&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
+  }
+}</component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.25557.131" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c0419a4f-d5e2-4b96-be09-53087f12f5c1" name="Changes" comment="" />
+      <created>1758202126427</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1758202126427</updated>
+    </task>
+    <servers />
+  </component>
+</project>
