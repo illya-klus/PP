@@ -1,0 +1,56 @@
+
+Table Users{
+  UserId integer [primary key]
+  Login nvarchar(256)
+  Password nvarchar(40)
+
+  isAdmin nvarchar(3)
+  WalletId integer [unique]
+}
+
+
+Table Wallet{
+  WalletId integer [primary key]
+}
+Ref: Wallet.WalletId > Users.WalletId
+
+
+
+
+Table Banks{
+  BankID integer [primary key]
+  BankName nvarchar(256)
+
+  BankRate integer //from one to five
+  
+  BankAddress nvarchar(256)
+  BankPhone nvarchar(256)
+  BankWebUrl nvarchar(256)
+}
+
+
+
+Table Deposits {
+  DepositId integer [primary key]   // Унікальний ідентифікатор депозиту
+  BankId integer                    // Посилання на банк
+  Name varchar                      // Назва депозиту
+  InterestRate decimal              // Процентна ставка
+  TermMonths integer                // Строк депозиту у місяцях
+  MinAmount decimal                 // Мінімальна сума вкладу
+  AllowTopUp boolean                // Можливість поповнення депозиту
+  EarlyWithdrawal boolean           // Можливість дострокового зняття
+  Currency varchar                  // Валюта вкладу (UAH, USD, EUR)
+  Description text                  // Додатковий опис депозиту
+}
+Ref: Deposits.BankId < Banks.BankID
+
+
+Table WalletHistory {
+  WriteId integer [primary key]
+  DepositId integer
+  WalletId integer
+  isActual nvarchar(3)
+}
+Ref: WalletHistory.WalletId > Wallet.WalletId
+Ref: WalletHistory.DepositId > Deposits.DepositId
+
