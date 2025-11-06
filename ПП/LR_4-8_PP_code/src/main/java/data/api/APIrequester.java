@@ -423,7 +423,92 @@ public class APIrequester {
         }
     }
 
-    
+
+    public boolean deleteUser(int userId) {
+        try {
+            if (userId <= 0) {
+                showAlert("Помилка", "Некоректний ID користувача!");
+                return false;
+            }
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "users?userid=eq." + userId))
+                    .header("apikey", API_KEY)
+                    .DELETE()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println("deleteUser response: " + response.body());
+
+            if (response.statusCode() == 200 || response.statusCode() == 204) {
+                return true;
+            } else {
+                showAlert("Помилка", "Не вдалося видалити користувача!");
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Помилка", "Не вдалося видалити користувача!");
+            return false;
+        }
+    }
+    public boolean deleteBank(int bankId) {
+        try {
+            if (bankId <= 0) {
+                showAlert("Помилка", "Некоректний ID банку!");
+                return false;
+            }
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "banks?bankid=eq." + bankId))
+                    .header("apikey", API_KEY)
+                    .DELETE()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println("deleteBank response: " + response.body());
+
+            if (response.statusCode() == 200 || response.statusCode() == 204) {
+                return true;
+            } else {
+                showAlert("Помилка", "Не вдалося видалити банк!");
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Помилка", "Не вдалося видалити банк!");
+            return false;
+        }
+    }
+    public boolean deleteDeposit(int depositId) {
+        try {
+            if (depositId <= 0) {
+                showAlert("Помилка", "Некоректний ID депозиту!");
+                return false;
+            }
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "deposits?depositid=eq." + depositId))
+                    .header("apikey", API_KEY)
+                    .DELETE()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println("deleteDeposit response: " + response.body());
+
+            if (response.statusCode() == 200 || response.statusCode() == 204) {
+                return true;
+            } else {
+                showAlert("Помилка", "Не вдалося видалити депозит!");
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Помилка", "Не вдалося видалити депозит!");
+            return false;
+        }
+    }
+
 
     private void showAlert(String title, String message) {
         javafx.application.Platform.runLater(() -> {

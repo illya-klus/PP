@@ -685,9 +685,28 @@ public class BankApp extends Application {
         Label roleLbl = new Label(isAdmin ? "Роль: Адмін" : "Роль: Користувач");
         infoBox.getChildren().addAll(idLbl, loginLbl, passLbl, roleLbl);
 
-
         Button deleteBtn = new Button("-");
         deleteBtn.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
+
+        deleteBtn.setOnAction(e -> {
+            try{
+                boolean s = api.deleteUser(id);
+                if(s) {
+
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("✅ Успіх");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Користувача успішно видалено!");
+                    alert.showAndWait();
+                }
+            } catch (NumberFormatException ex) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Помилка");
+                alert.setHeaderText(null);
+                alert.setContentText("Перевір правильність числових полів ID");
+                alert.showAndWait();
+            }
+        });
 
         HBox btnBox = new HBox(10, deleteBtn);
         btnBox.setAlignment(Pos.CENTER_RIGHT);
@@ -821,6 +840,26 @@ public class BankApp extends Application {
         Button deleteBtn = new Button("-");
         deleteBtn.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
 
+        deleteBtn.setOnAction(e -> {
+            try{
+                boolean s = api.deleteBank(id);
+                if(s) {
+
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("✅ Успіх");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Банк успішно видалено!");
+                    alert.showAndWait();
+                }
+            } catch (NumberFormatException ex) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Помилка");
+                alert.setHeaderText(null);
+                alert.setContentText("Перевір правильність числових полів ID");
+                alert.showAndWait();
+            }
+        });
+
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
@@ -874,7 +913,6 @@ public class BankApp extends Application {
         VBox depositCards = new VBox(15);
         depositCards.setAlignment(Pos.CENTER);
         depositCards.setPadding(new Insets(10));
-
 
         // Обробник кнопки “Додати”
         addBtn.setOnAction(e -> {
@@ -968,6 +1006,26 @@ public class BankApp extends Application {
 
         Button deleteBtn = new Button("-");
         deleteBtn.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
+
+        deleteBtn.setOnAction(e -> {
+            try{
+                boolean s = api.deleteDeposit(id);
+                if(s) {
+
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("✅ Успіх");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Депозит успішно видалено!");
+                    alert.showAndWait();
+                }
+            } catch (NumberFormatException ex) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Помилка");
+                alert.setHeaderText(null);
+                alert.setContentText("Перевір правильність числових полів ID");
+                alert.showAndWait();
+            }
+        });
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
