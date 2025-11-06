@@ -1,7 +1,8 @@
-package domain.banks;
+package data.caches;
 
 
-import data.APIrequester;
+import data.api.APIrequester;
+import domain.banks.Bank;
 
 import java.util.ArrayList;
 import java.util.List;

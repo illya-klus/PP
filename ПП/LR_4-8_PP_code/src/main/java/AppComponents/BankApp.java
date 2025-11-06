@@ -1,17 +1,18 @@
 package AppComponents;
 
 import domain.banks.Bank;
-import domain.banks.BankCache;
-import domain.deposits.DepositsCache;
-import domain.deposits.OpenDepositsCache;
+import data.caches.BankCache;
+import data.caches.DepositsCache;
+import data.caches.OpenDepositsCache;
 import domain.users.UserSession;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 import javafx.scene.paint.Color;
 
 import domain.deposits.Deposit;
-import data.APIrequester;
+import data.api.APIrequester;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 public class BankApp extends Application {
 
     private VBox depositsContainer; // додати в класі
@@ -46,6 +48,8 @@ public class BankApp extends Application {
 
     private BorderPane rootPane;       // основний контейнер
     private ArrayList<Pane> previousPane = new ArrayList<Pane>();  //  нове поле для збереження попередніх pane
+
+
 
     @Override
     public void start(Stage primaryStage) {
@@ -186,7 +190,7 @@ public class BankApp extends Application {
             });
             deposits.setOnAction(e -> {
                 previousPane.add((Pane) rootPane.getCenter());
-                rootPane.setCenter(createEditDepositsPane(false));
+                rootPane.setCenter(createEditDepositsPane());
             });
             users.setOnAction(e -> {
                 previousPane.add((Pane) rootPane.getCenter());
@@ -404,7 +408,7 @@ public class BankApp extends Application {
 
         new Thread(() -> {
 
-            List<Deposit> userDeposits = OpenDepositsCache.getInstance().getOpenDeposits();
+            List<Deposit> userDeposits = OpenDepositsCache.getInstance().loadOpenDeposits();
 
             if (userDeposits == null || userDeposits.isEmpty()) {
                 userDeposits = api.getUserDeposits(currentUser.getUserId());
@@ -582,39 +586,267 @@ public class BankApp extends Application {
     }
 
 
-    // сторінки меню адміна
+    //сторінки меню адміна
     private Pane createEditUserPage() {
-        VBox box = new VBox(10);
-        box.setAlignment(Pos.CENTER);
+        VBox root = new VBox(20);
+        root.setPadding(new Insets(20));
+        root.setAlignment(Pos.TOP_CENTER);
 
-        Label title = new Label("Редактор бази даних юзерів");
-        title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
-        box.getChildren().add(title);
+        Label title = new Label("Редактор бази даних users");
+        title.setStyle("-fx-font-size: 22px; -fx-font-weight: bold;");
 
-        return box;
+        // 🔹 Форма для додавання нового користувача
+        TextField loginField = new TextField();
+        loginField.setPromptText("Логін");
+
+        PasswordField passField = new PasswordField();
+        passField.setPromptText("Пароль");
+
+        CheckBox adminCheck = new CheckBox("Адмін");
+
+        Button addBtn = new Button("➕ Додати користувача");
+        addBtn.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;");
+
+        VBox formBox = new VBox(10, loginField, passField, adminCheck, addBtn);
+        formBox.setAlignment(Pos.CENTER);
+        formBox.setStyle("-fx-background-color: #f4f4f4; -fx-padding: 15; -fx-background-radius: 10;");
+
+        // Контейнер для карточок користувачів
+        VBox userCardsContainer = new VBox(15);
+        userCardsContainer.setAlignment(Pos.CENTER_LEFT);
+        userCardsContainer.setPadding(new Insets(10));
+
+
+        // 🔹 Заглушка — далі замість цього буде завантаження користувачів із API
+        for (int i = 1; i <= 5; i++) {
+            userCardsContainer.getChildren().add(createUserCard(
+                    i,
+                    "user" + i,
+                    "password" + i,
+                    i % 2 == 0
+            ));
+        }
+
+
+        root.getChildren().addAll(title, formBox, userCardsContainer);
+
+        // Робимо скрол на всю сторінку
+        ScrollPane scrollPane = new ScrollPane(root);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setStyle("-fx-background-color: transparent;");
+
+        // Обгортка, бо ScrollPane не є Pane
+        StackPane wrapper = new StackPane(scrollPane);
+        wrapper.setPrefSize(800, 600);
+        wrapper.setStyle("-fx-background-color: #F9F9FF;");
+
+        return wrapper;
     }
+    private HBox createUserCard(int id, String login, String password, boolean isAdmin) {
+        HBox card = new HBox(15);
+        card.setAlignment(Pos.CENTER_LEFT);
+        card.setPadding(new Insets(10));
+        card.setStyle("-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5,0,0,2);");
+
+        VBox infoBox = new VBox(5);
+        Label idLbl = new Label("ID: " + id);
+        Label loginLbl = new Label("Логін: " + login);
+        Label passLbl = new Label("Пароль: " + password);
+        Label roleLbl = new Label(isAdmin ? "Роль: Адмін" : "Роль: Користувач");
+        infoBox.getChildren().addAll(idLbl, loginLbl, passLbl, roleLbl);
+
+        Button editBtn = new Button("✏️");
+        editBtn.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white;");
+        Button deleteBtn = new Button("🗑️");
+        deleteBtn.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
+
+        HBox btnBox = new HBox(10, editBtn, deleteBtn);
+        btnBox.setAlignment(Pos.CENTER_RIGHT);
+
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        card.getChildren().addAll(infoBox, spacer, btnBox);
+
+        // TODO: тут додай логіку для кнопок (редагування/видалення)
+        return card;
+    }
+
     private Pane createEditBanksPage() {
-        VBox box = new VBox(10);
-        box.setAlignment(Pos.CENTER);
+        VBox root = new VBox(20);
+        root.setPadding(new Insets(20));
+        root.setAlignment(Pos.TOP_CENTER);
 
-        Label label = new Label("Редактор бази даних банків");
-        label.setStyle("-fx-font-size: 16px;");
-        box.getChildren().add(label);
+        Label title = new Label("Редактор бази даних банків");
+        title.setStyle("-fx-font-size: 22px; -fx-font-weight: bold;");
 
-        return box;
+        // 🔹 Форма для додавання банку
+        TextField nameField = new TextField();
+        nameField.setPromptText("Назва банку");
+
+        TextField addrField = new TextField();
+        addrField.setPromptText("Адреса");
+
+        TextField urlField = new TextField();
+        urlField.setPromptText("Вебсайт");
+
+        TextField phoneField = new TextField();
+        phoneField.setPromptText("Телефон");
+
+        Button addBtn = new Button("➕ Додати банк");
+        addBtn.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;");
+
+        VBox formBox = new VBox(10, nameField, addrField, urlField, phoneField, addBtn);
+        formBox.setAlignment(Pos.CENTER);
+        formBox.setStyle("-fx-background-color: #f4f4f4; -fx-padding: 15; -fx-background-radius: 10;");
+
+        // Контейнер для карток банків
+        VBox bankCards = new VBox(15);
+        bankCards.setAlignment(Pos.CENTER_LEFT);
+        bankCards.setPadding(new Insets(10));
+
+
+        // Заглушка з прикладом
+        for (int i = 1; i <= 5; i++) {
+            bankCards.getChildren().add(createBankCard(i, "Банк " + i, "м. Київ", "bank" + i + ".ua", "+380000000" + i));
+        }
+
+
+        // Весь контент у VBox
+        root.getChildren().addAll(title, formBox, bankCards);
+
+        // Робимо скрол на всю сторінку
+        ScrollPane scrollPane = new ScrollPane(root);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setStyle("-fx-background-color: transparent;");
+
+        // Обгортка, бо ScrollPane не є Pane
+        StackPane wrapper = new StackPane(scrollPane);
+        wrapper.setPrefSize(800, 600);
+        wrapper.setStyle("-fx-background-color: #F9F9FF;");
+
+        return wrapper;
     }
-    private Pane createEditDepositsPane(boolean isUserProfile) {
-        VBox box = new VBox(10);
-        box.setAlignment(Pos.CENTER);
+    private HBox createBankCard(int id, String name, String address, String url, String phone) {
+        HBox card = new HBox(15);
+        card.setAlignment(Pos.CENTER_LEFT);
+        card.setPadding(new Insets(10));
+        card.setStyle("-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5,0,0,2);");
 
-        Label title = new Label("Каталог депозитів");
-        title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
-        box.getChildren().add(title);
+        VBox info = new VBox(5);
+        Label idLbl = new Label("ID: " + id);
+        Label nameLbl = new Label("Назва: " + name);
+        Label addrLbl = new Label("Адреса: " + address);
+        Label urlLbl = new Label("Вебсайт: " + url);
+        Label phoneLbl = new Label("Телефон: " + phone);
+        info.getChildren().addAll(idLbl, nameLbl, addrLbl, urlLbl, phoneLbl);
 
-        return box;
+        Button editBtn = new Button("✏️");
+        editBtn.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white;");
+        Button deleteBtn = new Button("🗑️");
+        deleteBtn.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
+
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        card.getChildren().addAll(info, spacer, new HBox(10, editBtn, deleteBtn));
+        return card;
     }
 
+    private Pane createEditDepositsPane() {
+        VBox content = new VBox(20);
+        content.setPadding(new Insets(20));
+        content.setAlignment(Pos.TOP_CENTER);
 
+        Label title = new Label("Редактор бази даних депозитів");
+        title.setStyle("-fx-font-size: 22px; -fx-font-weight: bold;");
+
+        // 🔹 Форма для додавання депозиту
+        TextField nameField = new TextField();
+        nameField.setPromptText("Назва депозиту");
+
+        TextField bankIdField = new TextField();
+        bankIdField.setPromptText("ID банку");
+
+        TextField rateField = new TextField();
+        rateField.setPromptText("Ставка (%)");
+
+        TextField termField = new TextField();
+        termField.setPromptText("Термін (міс)");
+
+        TextField minField = new TextField();
+        minField.setPromptText("Мін. сума");
+
+        CheckBox topupBox = new CheckBox("Поповнення");
+        CheckBox earlyBox = new CheckBox("Дострокове зняття");
+
+        TextField currencyField = new TextField();
+        currencyField.setPromptText("Валюта (UAH/USD...)");
+
+        Button addBtn = new Button("➕ Додати депозит");
+        addBtn.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;");
+
+        VBox formBox = new VBox(10,
+                nameField, bankIdField, rateField, termField, minField,
+                topupBox, earlyBox, currencyField, addBtn);
+        formBox.setAlignment(Pos.CENTER);
+        formBox.setStyle("-fx-background-color: #f4f4f4; -fx-padding: 15; -fx-background-radius: 10;");
+
+        // 🔹 Контейнер для карток депозитів
+        VBox depositCards = new VBox(15);
+        depositCards.setAlignment(Pos.CENTER);
+        depositCards.setPadding(new Insets(10));
+
+        // 🔹 Приклади (для тесту)
+        for (int i = 1; i <= 5; i++) {
+            Deposit dep = new Deposit(
+                    i, 1, "Депозит №" + i, 10.5 + i, 12,
+                    5000 + i * 1000, i % 2 == 0, false, "UAH",
+                    "Класичний депозит із бонусом " + i, "MonoBank", "", "", ""
+            );
+            depositCards.getChildren().add(createDepositCard(dep, content));
+        }
+
+        // 🔹 Кнопка “Додати”
+        addBtn.setOnAction(e -> {
+            Deposit newDep = new Deposit(
+                    999,
+                    Integer.parseInt(bankIdField.getText().isEmpty() ? "0" : bankIdField.getText()),
+                    nameField.getText(),
+                    Double.parseDouble(rateField.getText().isEmpty() ? "0" : rateField.getText()),
+                    Integer.parseInt(termField.getText().isEmpty() ? "0" : termField.getText()),
+                    Double.parseDouble(minField.getText().isEmpty() ? "0" : minField.getText()),
+                    topupBox.isSelected(),
+                    earlyBox.isSelected(),
+                    currencyField.getText().isEmpty() ? "UAH" : currencyField.getText(),
+                    "Новий депозит, доданий вручну",
+                    "Банк #" + bankIdField.getText(),
+                    "", "", ""
+            );
+            depositCards.getChildren().add(createDepositCard(newDep, content));
+        });
+
+        // Весь контент у VBox
+        content.getChildren().addAll(title, formBox, depositCards);
+
+        // Робимо скрол на всю сторінку
+        ScrollPane scrollPane = new ScrollPane(content);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setStyle("-fx-background-color: transparent;");
+
+        // Обгортка, бо ScrollPane не є Pane
+        StackPane wrapper = new StackPane(scrollPane);
+        wrapper.setPrefSize(800, 600);
+        wrapper.setStyle("-fx-background-color: #F9F9FF;");
+
+        return wrapper;
+    }
     private Pane createDepositCard(Deposit dep, Pane parentPane) {
         VBox card = new VBox(8);
         card.setPadding(new Insets(10));
@@ -674,6 +906,7 @@ public class BankApp extends Application {
         return card;
     }
 
+    
     public static void main(String[] args) {
         launch(args);
     }

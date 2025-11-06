@@ -1,6 +1,7 @@
-package domain.deposits;
+package data.caches;
 
-import data.APIrequester;
+import data.api.APIrequester;
+import domain.deposits.Deposit;
 import domain.users.User;
 import domain.users.UserSession;
 
