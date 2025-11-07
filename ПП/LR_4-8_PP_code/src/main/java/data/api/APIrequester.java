@@ -84,12 +84,25 @@ public class APIrequester {
 
     public List<Deposit> getDeposits() {
         List<Deposit> deposits = new ArrayList<>();
-        try {
-            String requestUrl = BASE_URL + "deposits?select=*,banks(*)";
 
-            HttpRequest request = buildRequest(requestUrl);
+        try {
+            // Отримуємо депозити разом із даними банку
+            String requestUrl = BASE_URL + "deposits?select=depositid,bankid,name,interestrate,termmonths,minamount,allowtopup,earlywithdrawal,currency,description,banks(name,weburl,address,phonenumber)";
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(requestUrl))
+                    .header("apikey", API_KEY)
+                    .header("Authorization", "Bearer " + API_KEY)
+                    .GET()
+                    .build();
+
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println("Deposits response: " + response.body());
+            System.out.println("getDeposits response: " + response.body());
+
+            if (response.statusCode() != 200) {
+                showAlert("Помилка", "Не вдалося завантажити депозити (код: " + response.statusCode() + ")");
+                return deposits;
+            }
 
             JSONArray arr = new JSONArray(response.body().trim());
             for (int i = 0; i < arr.length(); i++) {
@@ -97,15 +110,15 @@ public class APIrequester {
                 JSONObject bankObj = obj.optJSONObject("banks");
 
                 Deposit deposit = new Deposit(
-                        obj.getInt("depositid"),
-                        obj.getInt("bankid"),
-                        obj.getString("name"),
-                        obj.getDouble("interestrate"),
-                        obj.getInt("termmonths"),
-                        obj.getDouble("minamount"),
+                        obj.optInt("depositid"),
+                        obj.optInt("bankid"),
+                        obj.optString("name", "Невідомий депозит"),
+                        obj.optDouble("interestrate", 0.0),
+                        obj.optInt("termmonths", 0),
+                        obj.optDouble("minamount", 0.0),
                         obj.optBoolean("allowtopup", false),
                         obj.optBoolean("earlywithdrawal", false),
-                        obj.getString("currency"),
+                        obj.optString("currency", "UAH"),
                         obj.optString("description", ""),
                         bankObj != null ? bankObj.optString("name", "Невідомий банк") : "Невідомий банк",
                         bankObj != null ? bankObj.optString("weburl", "") : "",
@@ -116,9 +129,11 @@ public class APIrequester {
                 deposits.add(deposit);
             }
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Помилка", "Сталася помилка при отриманні депозитів!");
         }
+
         return deposits;
     }
     public List<Bank> getAllBanks() {
@@ -149,17 +164,31 @@ public class APIrequester {
     }
     public List<Deposit> getUserDeposits(int userId) {
         List<Deposit> userDeposits = new ArrayList<>();
+
         try {
+            // Запит: відкриті депозити користувача з повною інформацією про депозит і банк
             String requestUrl = BASE_URL + "opendeposits"
-                    + "?select=*,deposits(*,banks(*)),wallets!inner(userid)"
+                    + "?select=opendepositid,depositid,moneyondeposit,startdate,enddate,"
+                    + "deposits(*,banks(*)),wallets!inner(userid)"
                     + "&wallets.userid=eq." + userId;
 
-            HttpRequest request = buildRequest(requestUrl);
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(requestUrl))
+                    .header("apikey", API_KEY)
+                    .header("Authorization", "Bearer " + API_KEY)
+                    .header("Accept", "application/json")
+                    .GET()
+                    .build();
+
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             String body = response.body().trim();
 
             System.out.println("getUserDeposits response: " + body);
-            if (!body.startsWith("[")) return userDeposits;
+
+            if (response.statusCode() != 200 || !body.startsWith("[")) {
+                System.out.println("⚠️ Не вдалося отримати депозити користувача (код: " + response.statusCode() + ")");
+                return userDeposits;
+            }
 
             JSONArray arr = new JSONArray(body);
             for (int i = 0; i < arr.length(); i++) {
@@ -168,27 +197,50 @@ public class APIrequester {
                 if (depObj == null) continue;
 
                 JSONObject bankObj = depObj.optJSONObject("banks");
-                String bankName = bankObj != null ? bankObj.optString("name", "Невідомий банк") : "Невідомий банк";
 
-                userDeposits.add(new Deposit(
-                        depObj.getInt("depositid"),
-                        depObj.getInt("bankid"),
-                        depObj.getString("name"),
-                        depObj.getDouble("interestrate"),
-                        depObj.getInt("termmonths"),
-                        depObj.getDouble("minamount"),
+                // --- Інфо про банк ---
+                String bankName = bankObj != null ? bankObj.optString("name", "Невідомий банк") : "Невідомий банк";
+                String bankUrl = bankObj != null ? bankObj.optString("weburl", "") : "";
+                String bankAddr = bankObj != null ? bankObj.optString("address", "") : "";
+                String bankPhone = bankObj != null ? bankObj.optString("phonenumber", "—") : "—";
+
+                // --- Інфо про депозит ---
+                int openDepositId = obj.optInt("opendepositid", -1);
+                double moneyOnDeposit = obj.optDouble("moneyondeposit", 0.0);
+
+            // 🔥 Ключова зміна — правильна перевірка на null
+                String startDate = obj.isNull("startdate") ? null : obj.optString("startdate", null);
+                String endDate = obj.isNull("enddate") ? null : obj.optString("enddate", null);
+
+                Deposit deposit = new Deposit(
+                        depObj.optInt("depositid", -1),
+                        depObj.optInt("bankid", -1),
+                        depObj.optString("name", "Невідомий депозит"),
+                        depObj.optDouble("interestrate", 0.0),
+                        depObj.optInt("termmonths", 0),
+                        depObj.optDouble("minamount", 0.0),
                         depObj.optBoolean("allowtopup", false),
                         depObj.optBoolean("earlywithdrawal", false),
-                        depObj.getString("currency"),
+                        depObj.optString("currency", "UAH"),
                         depObj.optString("description", ""),
                         bankName,
-                        "", "", ""
-                ));
+                        bankUrl,
+                        bankAddr,
+                        bankPhone,
+                        openDepositId,
+                        moneyOnDeposit,
+                        startDate,
+                        endDate
+                );
+
+                userDeposits.add(deposit);
             }
 
         } catch (Exception ex) {
             ex.printStackTrace();
+            System.out.println("❌ Помилка при виконанні getUserDeposits()");
         }
+
         return userDeposits;
     }
 
@@ -706,6 +758,66 @@ public class APIrequester {
             return false;
         }
     }
+
+    public double getWalletBalance(int userId) {
+        try {
+            String requestUrl = BASE_URL + "wallets?select=money&userid=eq." + userId;
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(requestUrl))
+                    .header("apikey", API_KEY)
+                    .header("Authorization", "Bearer " + API_KEY)
+                    .header("Accept", "application/json")
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            String body = response.body().trim();
+
+            System.out.println("getWalletBalance response: " + body);
+
+            if (response.statusCode() != 200 || !body.startsWith("[")) return 0.0;
+
+            JSONArray arr = new JSONArray(body);
+            if (arr.length() == 0) return 0.0;
+
+            return arr.getJSONObject(0).optDouble("money", 0.0);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("❌ Помилка при виконанні getWalletBalance()");
+            return 0.0;
+        }
+    }
+    public double getDepositBalance(int openDepositId) {
+        try {
+            String requestUrl = BASE_URL + "opendeposits?select=moneyondeposit&opendepositid=eq." + openDepositId;
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(requestUrl))
+                    .header("apikey", API_KEY)
+                    .header("Authorization", "Bearer " + API_KEY)
+                    .header("Accept", "application/json")
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            String body = response.body().trim();
+
+            System.out.println("getDepositBalance response: " + body);
+
+            if (response.statusCode() != 200 || !body.startsWith("[")) return 0.0;
+
+            JSONArray arr = new JSONArray(body);
+            if (arr.length() == 0) return 0.0;
+
+            return arr.getJSONObject(0).optDouble("moneyondeposit", 0.0);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("❌ Помилка при виконанні getDepositBalance()");
+            return 0.0;
+        }
+    }
+
 
 
     private void showAlert(String title, String message) {

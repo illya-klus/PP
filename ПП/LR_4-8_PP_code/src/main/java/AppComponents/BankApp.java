@@ -391,6 +391,19 @@ public class BankApp extends Application {
         Label id = new Label("ID користувача: " + currentUser.getUserId());
         Label role = new Label("Роль: " + (currentUser.isAdmin() ? "Адміністратор" : "Звичайний користувач"));
 
+
+        // 🔹 Баланс користувача
+        Label walletBalance = new Label("💵 Баланс: ...");
+        walletBalance.setStyle("-fx-font-size: 15px; -fx-text-fill: #2E2B5F; -fx-font-weight: bold;");
+        userInfo.getChildren().add(walletBalance);
+
+        // Асинхронно підтягуємо баланс з API
+        new Thread(() -> {
+            double balance = api.getWalletBalance(currentUser.getUserId());
+            Platform.runLater(() -> {
+                walletBalance.setText(String.format("💵 Баланс: %.2f UAH", balance));
+            });
+        }).start();
         userInfo.getChildren().addAll(header, username, id, role);
 
         // Контейнер для депозитів
@@ -1017,6 +1030,10 @@ public class BankApp extends Application {
         return card;
     }
 
+
+
+
+
     private Pane createDepositCard(Deposit dep, Pane parentPane) {
         VBox card = new VBox(8);
         card.setPadding(new Insets(10));
@@ -1070,8 +1087,8 @@ public class BankApp extends Application {
         return card;
     }
     private VBox createUserDepositCard(Deposit dep, VBox depositsBox) {
-        VBox card = new VBox(6);
-        card.setPadding(new Insets(10));
+        VBox card = new VBox(8);
+        card.setPadding(new Insets(12));
         card.setStyle("""
         -fx-background-color: white;
         -fx-border-color: #E0DFFF;
@@ -1080,20 +1097,42 @@ public class BankApp extends Application {
         -fx-effect: dropshadow(gaussian, rgba(108,99,255,0.1), 6, 0, 0, 2);
     """);
 
+        // 🔹 Заголовок депозиту
         Label depName = new Label(dep.getName());
-        depName.setStyle("-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #2E2B5F;");
+        depName.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2E2B5F;");
 
+        // 🔹 Основна інформація
         Label rate = new Label(String.format("Відсоток: %.2f%%", dep.getInterestRate()));
         Label term = new Label("Термін: " + dep.getTermMonths() + " міс.");
-        Label amount = new Label(String.format("Мін. сума: %.2f %s", dep.getMinAmount(), dep.getCurrency()));
+        Label minAmount = new Label(String.format("Мін. сума: %.2f %s", dep.getMinAmount(), dep.getCurrency()));
+        Label currentAmount = new Label("На депозиті: ..."); // буде підвантажено з API
 
-        card.getChildren().addAll(depName, rate, term, amount);
+// 🔸 Асинхронно підвантажуємо актуальну суму
+        new Thread(() -> {
+            double actualAmount = api.getDepositBalance(dep.getOpenDepositId());
+            Platform.runLater(() -> {
+                currentAmount.setText(String.format("На депозиті: %.2f %s", actualAmount, dep.getCurrency()));
+            });
+        }).start();
 
-        // 🔹 Якщо депозит можна зняти достроково — додаємо кнопки
-        if (dep.isEarlyWithdrawal()) {
+
+        // 🔹 Дати
+        Label startDate = new Label("Відкрито: " + (dep.getStartDate() != null ? dep.getStartDate() : "—"));
+        Label endDate = new Label("Закрито: " + (dep.getEndDate() != null ? dep.getEndDate() : "—"));
+
+        // 🔹 Статус
+        Label status = new Label(dep.getEndDate() == null ? "Статус: 🔵 Активний" : "Статус: ⚫ Закрито");
+        status.setStyle(dep.getEndDate() == null
+                ? "-fx-text-fill: green; -fx-font-weight: bold;"
+                : "-fx-text-fill: gray; -fx-font-weight: bold;");
+
+        card.getChildren().addAll(depName, rate, term, minAmount, currentAmount, startDate, endDate, status);
+
+        // 🔹 Якщо депозит активний і дозволяє зняття — додаємо кнопки
+        if (dep.getEndDate() == null) {
             HBox actions = new HBox(10);
             actions.setAlignment(Pos.CENTER_LEFT);
-            actions.setPadding(new Insets(5, 0, 0, 0));
+            actions.setPadding(new Insets(6, 0, 0, 0));
 
             Button closeBtn = new Button("💸 Закрити депозит");
             closeBtn.setStyle("""
@@ -1113,15 +1152,14 @@ public class BankApp extends Application {
             -fx-cursor: hand;
         """);
 
-            // 🔸 Обробка натискання "Закрити депозит"
+            // 🔸 Закриття депозиту
             closeBtn.setOnAction(e -> {
                 Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
                         "Ви справді хочете закрити цей депозит?", ButtonType.YES, ButtonType.NO);
                 confirm.showAndWait().ifPresent(btn -> {
                     if (btn == ButtonType.YES) {
                         new Thread(() -> {
-                            // ❗ Тут має бути openDepositId, а не depositId!
-                            boolean success = api.closeUserDepositById(dep.getDepositId());
+                            boolean success = api.closeUserDepositById(dep.getOpenDepositId());
                             Platform.runLater(() -> {
                                 if (success) {
                                     showAlert("✅ Успіх", "Депозит успішно закрито!");
@@ -1135,7 +1173,7 @@ public class BankApp extends Application {
                 });
             });
 
-            // 🔸 Обробка натискання "Поповнити"
+            // 🔸 Поповнення депозиту
             topUpBtn.setOnAction(e -> {
                 TextInputDialog dialog = new TextInputDialog();
                 dialog.setTitle("Поповнення депозиту");
@@ -1151,8 +1189,7 @@ public class BankApp extends Application {
                         }
 
                         new Thread(() -> {
-                            // ❗ Тут також має бути openDepositId, а не userId чи depositId
-                            boolean success = api.topUpUserDeposit(dep.getDepositId(), addAmount);
+                            boolean success = api.topUpUserDeposit(dep.getOpenDepositId(), addAmount);
                             Platform.runLater(() -> {
                                 if (success)
                                     showAlert("✅ Успіх", "Депозит поповнено на " + addAmount + " " + dep.getCurrency());
