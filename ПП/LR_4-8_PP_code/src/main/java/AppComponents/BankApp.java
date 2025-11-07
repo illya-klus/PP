@@ -373,7 +373,7 @@ public class BankApp extends Application {
             return box;
         }
 
-        // 🔹 Інфо про користувача
+        // Інфо про користувача
         VBox userInfo = new VBox(6);
         userInfo.setAlignment(Pos.CENTER_LEFT);
         userInfo.setStyle("""
@@ -393,7 +393,7 @@ public class BankApp extends Application {
 
         userInfo.getChildren().addAll(header, username, id, role);
 
-        // 🔹 Контейнер для депозитів
+        // Контейнер для депозитів
         VBox depositsBox = new VBox(10);
         depositsBox.setAlignment(Pos.TOP_LEFT);
 
@@ -407,7 +407,6 @@ public class BankApp extends Application {
 
 
         new Thread(() -> {
-
             List<Deposit> userDeposits = OpenDepositsCache.getInstance().loadOpenDeposits();
 
             if (userDeposits == null || userDeposits.isEmpty()) {
@@ -421,27 +420,7 @@ public class BankApp extends Application {
                     noDep.setStyle("-fx-text-fill: #888;");
                     depositsBox.getChildren().add(noDep);
                 } else {
-                    for (Deposit dep : finalList) {
-                        VBox card = new VBox(6);
-                        card.setPadding(new Insets(10));
-                        card.setStyle("""
-                        -fx-background-color: white;
-                        -fx-border-color: #E0DFFF;
-                        -fx-border-radius: 10;
-                        -fx-background-radius: 10;
-                        -fx-effect: dropshadow(gaussian, rgba(108,99,255,0.1), 6, 0, 0, 2);
-                    """);
-
-                        Label depName = new Label(dep.getName());
-                        depName.setStyle("-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #2E2B5F;");
-
-                        Label rate = new Label(String.format("Відсоток: %.2f%%", dep.getInterestRate()));
-                        Label term = new Label("Термін: " + dep.getTermMonths() + " міс.");
-                        Label amount = new Label(String.format("Мін. сума: %.2f %s", dep.getMinAmount(), dep.getCurrency()));
-
-                        card.getChildren().addAll(depName, rate, term, amount);
-                        depositsBox.getChildren().add(card);
-                    }
+                    finalList.forEach(dep -> depositsBox.getChildren().add(createUserDepositCard(dep, depositsBox)));
                 }
             });
         }).start();
@@ -584,6 +563,8 @@ public class BankApp extends Application {
         container.getChildren().addAll(searchBox, scrollPane);
         return container;
     }
+
+
 
 
     //сторінки меню адміна
@@ -1056,45 +1037,152 @@ public class BankApp extends Application {
         Label details = new Label(String.format("💰 %.2f%% • %d міс.", dep.getInterestRate(), dep.getTermMonths()));
         Label amount = new Label(String.format("💵 Мін: %.2f %s", dep.getMinAmount(), dep.getCurrency()));
 
-        Button detailsBtn = new Button("Деталі");
-        detailsBtn.setStyle("-fx-background-color: #6C63FF; -fx-text-fill: white; -fx-background-radius: 8;");
-        detailsBtn.setOnMouseEntered(e -> detailsBtn.setStyle("-fx-background-color: #7D74FF; -fx-text-fill: white; -fx-background-radius: 8;"));
-        detailsBtn.setOnMouseExited(e -> detailsBtn.setStyle("-fx-background-color: #6C63FF; -fx-text-fill: white; -fx-background-radius: 8;"));
+        Button openBtn = new Button("Відкрити депозит");
+        openBtn.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 8;");
+        openBtn.setOnMouseEntered(e -> openBtn.setStyle("-fx-background-color: #5DD165; -fx-text-fill: white; -fx-background-radius: 8;"));
+        openBtn.setOnMouseExited(e -> openBtn.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 8;"));
 
-        detailsBtn.setOnAction(e -> {
-            // Зберігаємо поточну сторінку у стек
-            previousPane.add((Pane) rootPane.getCenter());
+        // --- Перевірка, чи користувач уже має цей депозит ---
+        new Thread(() -> {
+            boolean alreadyOpen = api.isDepositAlreadyOpenedForUser(dep.getDepositId(), UserSession.getInstance().getCurrentUser().getUserId());
+            Platform.runLater(() -> {
+                if (alreadyOpen) {
+                    openBtn.setText("Вже відкрито");
+                    openBtn.setDisable(true);
+                    openBtn.setStyle("-fx-background-color: #BDBDBD; -fx-text-fill: white; -fx-background-radius: 8;");
+                } else {
+                    openBtn.setOnAction(e -> {
+                        boolean success = api.openUserDeposit(UserSession.getInstance().getCurrentUser().getUserId(), dep.getDepositId(), dep.getMinAmount());
+                        if (success) {
+                            showAlert("Успіх", "Депозит успішно відкрито!");
+                            openBtn.setText("Вже відкрито");
+                            openBtn.setDisable(true);
+                            openBtn.setStyle("-fx-background-color: #BDBDBD; -fx-text-fill: white; -fx-background-radius: 8;");
+                        } else {
+                            showAlert("Помилка", "Не вдалося відкрити депозит!");
+                        }
+                    });
+                }
+            });
+        }).start();
 
-            VBox detailPage = new VBox(12);
-            detailPage.setPadding(new Insets(20));
-            detailPage.setStyle("-fx-background-color: white; -fx-background-radius: 12;");
-            Label header = new Label(dep.getName());
-            header.setFont(Font.font("Segoe UI", FontWeight.BOLD, 18));
-            Label bankInfo = new Label("Банк: " + dep.getBankName());
-            Label interest = new Label(String.format("Ставка: %.2f%%", dep.getInterestRate()));
-            Label term = new Label("Термін: " + dep.getTermMonths() + " міс.");
-            Label minAmount = new Label(String.format("Мін. сума: %.2f %s", dep.getMinAmount(), dep.getCurrency()));
-            Label description = new Label(dep.getDescription() != null && !dep.getDescription().isEmpty() ? dep.getDescription() : "Опис відсутній.");
-            description.setWrapText(true);
+        card.getChildren().addAll(name, bank, details, amount, openBtn);
+        return card;
+    }
+    private VBox createUserDepositCard(Deposit dep, VBox depositsBox) {
+        VBox card = new VBox(6);
+        card.setPadding(new Insets(10));
+        card.setStyle("""
+        -fx-background-color: white;
+        -fx-border-color: #E0DFFF;
+        -fx-border-radius: 10;
+        -fx-background-radius: 10;
+        -fx-effect: dropshadow(gaussian, rgba(108,99,255,0.1), 6, 0, 0, 2);
+    """);
 
-            HBox actionBox = new HBox(10);
-            Button openBtn = new Button("Відкрити");
-            openBtn.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 8;");
-            Button closeBtn = new Button("Закрити");
-            closeBtn.setStyle("-fx-background-color: #F44336; -fx-text-fill: white; -fx-background-radius: 8;");
-            Button earlyBtn = new Button("Достроково");
-            earlyBtn.setStyle("-fx-background-color: #FF9800; -fx-text-fill: white; -fx-background-radius: 8;");
+        Label depName = new Label(dep.getName());
+        depName.setStyle("-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #2E2B5F;");
 
-            actionBox.getChildren().addAll(openBtn, closeBtn, earlyBtn);
+        Label rate = new Label(String.format("Відсоток: %.2f%%", dep.getInterestRate()));
+        Label term = new Label("Термін: " + dep.getTermMonths() + " міс.");
+        Label amount = new Label(String.format("Мін. сума: %.2f %s", dep.getMinAmount(), dep.getCurrency()));
 
-            detailPage.getChildren().addAll(header, bankInfo, interest, term, minAmount, description, new Separator(), actionBox);
-            rootPane.setCenter(detailPage);
-        });
+        card.getChildren().addAll(depName, rate, term, amount);
 
-        card.getChildren().addAll(name, bank, details, amount, detailsBtn);
+        // 🔹 Якщо депозит можна зняти достроково — додаємо кнопки
+        if (dep.isEarlyWithdrawal()) {
+            HBox actions = new HBox(10);
+            actions.setAlignment(Pos.CENTER_LEFT);
+            actions.setPadding(new Insets(5, 0, 0, 0));
+
+            Button closeBtn = new Button("💸 Закрити депозит");
+            closeBtn.setStyle("""
+            -fx-background-color: #FF6B6B;
+            -fx-text-fill: white;
+            -fx-font-weight: bold;
+            -fx-background-radius: 8;
+            -fx-cursor: hand;
+        """);
+
+            Button topUpBtn = new Button("➕ Поповнити");
+            topUpBtn.setStyle("""
+            -fx-background-color: #6C63FF;
+            -fx-text-fill: white;
+            -fx-font-weight: bold;
+            -fx-background-radius: 8;
+            -fx-cursor: hand;
+        """);
+
+            // 🔸 Обробка натискання "Закрити депозит"
+            closeBtn.setOnAction(e -> {
+                Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                        "Ви справді хочете закрити цей депозит?", ButtonType.YES, ButtonType.NO);
+                confirm.showAndWait().ifPresent(btn -> {
+                    if (btn == ButtonType.YES) {
+                        new Thread(() -> {
+                            // ❗ Тут має бути openDepositId, а не depositId!
+                            boolean success = api.closeUserDepositById(dep.getDepositId());
+                            Platform.runLater(() -> {
+                                if (success) {
+                                    showAlert("✅ Успіх", "Депозит успішно закрито!");
+                                    depositsBox.getChildren().remove(card);
+                                } else {
+                                    showAlert("Помилка", "Не вдалося закрити депозит!");
+                                }
+                            });
+                        }).start();
+                    }
+                });
+            });
+
+            // 🔸 Обробка натискання "Поповнити"
+            topUpBtn.setOnAction(e -> {
+                TextInputDialog dialog = new TextInputDialog();
+                dialog.setTitle("Поповнення депозиту");
+                dialog.setHeaderText("Введіть суму поповнення:");
+                dialog.setContentText("Сума:");
+
+                dialog.showAndWait().ifPresent(amountStr -> {
+                    try {
+                        double addAmount = Double.parseDouble(amountStr);
+                        if (addAmount <= 0) {
+                            showAlert("Помилка", "Сума повинна бути більшою за 0!");
+                            return;
+                        }
+
+                        new Thread(() -> {
+                            // ❗ Тут також має бути openDepositId, а не userId чи depositId
+                            boolean success = api.topUpUserDeposit(dep.getDepositId(), addAmount);
+                            Platform.runLater(() -> {
+                                if (success)
+                                    showAlert("✅ Успіх", "Депозит поповнено на " + addAmount + " " + dep.getCurrency());
+                                else
+                                    showAlert("Помилка", "Не вдалося поповнити депозит!");
+                            });
+                        }).start();
+
+                    } catch (NumberFormatException ex) {
+                        showAlert("Помилка", "Введіть коректне число!");
+                    }
+                });
+            });
+
+            actions.getChildren().addAll(closeBtn, topUpBtn);
+            card.getChildren().add(actions);
+        }
+
         return card;
     }
 
+    private void showAlert(String title, String message) {
+        javafx.application.Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        });
+    }
 
     public static void main(String[] args) {
         launch(args);

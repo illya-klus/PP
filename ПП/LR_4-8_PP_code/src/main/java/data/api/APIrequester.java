@@ -6,6 +6,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -505,6 +506,203 @@ public class APIrequester {
         } catch (Exception e) {
             e.printStackTrace();
             showAlert("Помилка", "Не вдалося видалити депозит!");
+            return false;
+        }
+    }
+
+
+
+    public boolean closeUserDepositById(int openDepositId) {
+        try {
+            String today = LocalDate.now().toString();
+            JSONObject json = new JSONObject();
+            json.put("enddate", today);
+
+            String url = BASE_URL + "opendeposits?opendepositid=eq." + openDepositId;
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("apikey", API_KEY)
+                    .header("Authorization", "Bearer " + API_KEY)
+                    .header("Content-Type", "application/json")
+                    .method("PATCH", HttpRequest.BodyPublishers.ofString(json.toString()))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println("closeUserDepositById response: " + response.body());
+
+            return response.statusCode() == 200 || response.statusCode() == 204;
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Помилка", "Не вдалося закрити депозит!");
+            return false;
+        }
+    }
+    public boolean earlyWithdrawUserDeposit(int openDepositId) {
+        try {
+            JSONObject json = new JSONObject();
+            json.put("earlywithdrawal", true);
+            json.put("enddate", LocalDate.now().toString());
+
+            String url = BASE_URL + "opendeposits?opendepositid=eq." + openDepositId;
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("apikey", API_KEY)
+                    .header("Authorization", "Bearer " + API_KEY)
+                    .header("Content-Type", "application/json")
+                    .method("PATCH", HttpRequest.BodyPublishers.ofString(json.toString()))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println("earlyWithdrawUserDeposit response: " + response.body());
+
+            return response.statusCode() == 200 || response.statusCode() == 204;
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Помилка", "Не вдалося виконати дострокове зняття!");
+            return false;
+        }
+    }
+    public boolean openUserDeposit(int walletId, int depositId, double startAmount) {
+        try {
+            // 🔹 1. Перевіряємо, чи депозит уже відкритий для цього користувача
+            String checkUrl = BASE_URL + "opendeposits?walletid=eq." + walletId + "&depositid=eq." + depositId;
+            HttpRequest checkRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(checkUrl))
+                    .header("apikey", API_KEY)
+                    .header("Authorization", "Bearer " + API_KEY)
+                    .header("Accept", "application/json")
+                    .GET()
+                    .build();
+
+            HttpResponse<String> checkResponse = client.send(checkRequest, HttpResponse.BodyHandlers.ofString());
+            if (checkResponse.statusCode() != 200) {
+                showAlert("Помилка", "Не вдалося перевірити стан депозиту!");
+                return false;
+            }
+
+            JSONArray existing = new JSONArray(checkResponse.body());
+            if (!existing.isEmpty()) {
+                showAlert("Помилка", "Цей депозит уже відкритий для поточного користувача!");
+                return false;
+            }
+
+            // 🔹 2. Створюємо новий депозит
+            JSONObject json = new JSONObject();
+            json.put("walletid", walletId);
+            json.put("depositid", depositId);
+            json.put("moneyondeposit", startAmount);
+            json.put("startdate", java.time.LocalDate.now().toString());
+
+            String url = BASE_URL + "opendeposits";
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("apikey", API_KEY)
+                    .header("Authorization", "Bearer " + API_KEY)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println("openUserDeposit response: " + response.body());
+
+            if (response.statusCode() == 201 || response.statusCode() == 200) {
+                showAlert("Успіх", "Депозит успішно відкрито!");
+                return true;
+            } else {
+                showAlert("Помилка", "Не вдалося відкрити депозит!");
+                return false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Помилка", "Виникла помилка при відкритті депозиту!");
+            return false;
+        }
+    }
+    public boolean topUpUserDeposit(int openDepositId, double amount) {
+        try {
+            if (amount <= 0) {
+                showAlert("Помилка", "Сума має бути більшою за 0!");
+                return false;
+            }
+
+            // 1. Отримуємо поточний депозит
+            String getUrl = BASE_URL + "opendeposits?opendepositid=eq." + openDepositId;
+            HttpRequest getRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(getUrl))
+                    .header("apikey", API_KEY)
+                    .header("Authorization", "Bearer " + API_KEY)
+                    .header("Accept", "application/json")
+                    .GET()
+                    .build();
+
+            HttpResponse<String> getResponse = client.send(getRequest, HttpResponse.BodyHandlers.ofString());
+            if (getResponse.statusCode() != 200) {
+                showAlert("Помилка", "Не вдалося отримати дані депозиту!");
+                return false;
+            }
+
+            JSONArray jsonArray = new JSONArray(getResponse.body());
+            if (jsonArray.isEmpty()) {
+                showAlert("Помилка", "Депозит не знайдено!");
+                return false;
+            }
+
+            JSONObject deposit = jsonArray.getJSONObject(0);
+            double currentMoney = deposit.getDouble("moneyondeposit");
+            double newMoney = currentMoney + amount;
+
+            // 2. Оновлюємо суму
+            JSONObject json = new JSONObject();
+            json.put("moneyondeposit", newMoney);
+
+            String patchUrl = BASE_URL + "opendeposits?opendepositid=eq." + openDepositId;
+            HttpRequest patchRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(patchUrl))
+                    .header("apikey", API_KEY)
+                    .header("Authorization", "Bearer " + API_KEY)
+                    .header("Content-Type", "application/json")
+                    .method("PATCH", HttpRequest.BodyPublishers.ofString(json.toString()))
+                    .build();
+
+            HttpResponse<String> patchResponse = client.send(patchRequest, HttpResponse.BodyHandlers.ofString());
+            System.out.println("topUpUserDeposit response: " + patchResponse.body());
+
+            if (patchResponse.statusCode() == 200 || patchResponse.statusCode() == 204) {
+                showAlert("Успіх", "Депозит успішно поповнено на " + amount + "!");
+                return true;
+            } else {
+                showAlert("Помилка", "Не вдалося оновити депозит!");
+                return false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Помилка", "Не вдалося поповнити депозит!");
+            return false;
+        }
+    }
+
+    public boolean isDepositAlreadyOpenedForUser(int depositId, int userId) {
+        try {
+            String url = BASE_URL + "opendeposits?userid=eq." + userId + "&depositid=eq." + depositId;
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("apikey", API_KEY)
+                    .header("Authorization", "Bearer " + API_KEY)
+                    .header("Accept", "application/json")
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) return false;
+
+            JSONArray arr = new JSONArray(response.body());
+            return arr.length() > 0; // якщо є хоча б один запис — вже відкрито
+        } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }

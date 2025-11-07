@@ -1,10 +1,7 @@
 package domain.deposits;
 
-import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
+
+import data.api.APIrequester;
 
 public class Deposit {
 
@@ -23,6 +20,9 @@ public class Deposit {
     private String bankAddress;
     private String bankPhoneNumber;
 
+    public APIrequester api = new APIrequester();
+
+    // --- Конструктор ---
     public Deposit(int depositId, int bankId, String name, double interestRate, int termMonths, double minAmount,
                    boolean allowTopUp, boolean earlyWithdrawal, String currency, String description,
                    String bankName, String bankWebUrl, String bankAddress, String bankPhoneNumber) {
@@ -44,8 +44,8 @@ public class Deposit {
     }
 
     // --- Геттери ---
+    public String getDescription() {return this.description;}
     public int getDepositId() { return depositId; }
-    public int getBankId() { return bankId; }
     public String getName() { return name; }
     public double getInterestRate() { return interestRate; }
     public int getTermMonths() { return termMonths; }
@@ -53,38 +53,36 @@ public class Deposit {
     public boolean isAllowTopUp() { return allowTopUp; }
     public boolean isEarlyWithdrawal() { return earlyWithdrawal; }
     public String getCurrency() { return currency; }
-    public String getDescription() { return description; }
     public String getBankName() { return bankName; }
-    public String getBankWebUrl() { return bankWebUrl; }
-    public String getBankAddress() { return bankAddress; }
-    public String getBankPhoneNumber() { return bankPhoneNumber; }
 
-    // --- Метод для відображення депозиту у UI ---
-    public VBox displayAsPanel() {
-        VBox box = new VBox(5);
-        box.setPadding(new Insets(10));
-        box.setStyle("-fx-border-color: gray; -fx-border-width: 1; -fx-background-color: #f5f5f5;");
+    // --- Логічні методи (запити до API) ---
 
-        Label lblName = new Label(name);
-        lblName.setFont(new Font("Arial", 16));
-
-        Label lblBank = new Label("Банк: " + bankName);
-        Label lblRate = new Label("Відсоток: " + interestRate + "%");
-        Label lblTerm = new Label("Термін: " + termMonths + " міс.");
-        Label lblAmount = new Label("Мін. сума: " + minAmount + " " + currency);
-        Label lblTopUp = new Label("Поповнення: " + (allowTopUp ? "Так" : "Ні"));
-        Label lblEarly = new Label("Дострокове закриття: " + (earlyWithdrawal ? "Доступне" : "Немає"));
-        Label lblDesc = new Label(description != null ? description : "Опис відсутній.");
-        lblDesc.setWrapText(true);
-
-        Button btnReadMore = new Button("Детальніше");
-        btnReadMore.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        btnReadMore.setOnAction(e -> {
-            System.out.println("Відкрито депозит: " + name + " від банку " + bankName);
-            // тут можна додати детальну сторінку
-        });
-
-        box.getChildren().addAll(lblName, lblBank, lblRate, lblTerm, lblAmount, lblTopUp, lblEarly, lblDesc, btnReadMore);
-        return box;
+    /** Закриває депозит, встановлюючи end_date = CURRENT_DATE */
+    public void closeDeposit(int userId) {
+        api.closeUserDepositById(depositId);
+        System.out.println("Депозит закрито: " + name);
     }
+
+    /** Поповнює депозит на певну суму */
+    public void topUp(int userId, double amount) {
+        if (!allowTopUp) {
+            System.out.println("❌ Цей депозит не дозволяє поповнення");
+            return;
+        }
+        api.topUpUserDeposit(depositId, amount);
+        System.out.println("Поповнено депозит " + name + " на " + amount + " " + currency);
+    }
+
+
+    /** Знімає достроково кошти (якщо дозволено) */
+    public void earlyWithdraw(int userId) {
+        if (!earlyWithdrawal) {
+            System.out.println("❌ Дострокове зняття не дозволено для цього депозиту.");
+            return;
+        }
+        api.earlyWithdrawUserDeposit(depositId);
+        System.out.println("💸 Кошти достроково знято з депозиту " + name);
+    }
+
+
 }
