@@ -32,6 +32,7 @@ import domain.users.User;
 
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -252,50 +253,59 @@ public class BankApp extends Application {
         box.setPadding(new Insets(20));
         box.setStyle("-fx-background-color: transparent;");
 
-        // Заголовок
+        // --- Заголовок ---
         Label title = new Label("Каталог депозитів");
         title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2E2B5F;");
         box.getChildren().add(title);
 
-        // --- Пошук ---
+        // --- Пошук (по назві завжди) ---
         VBox searchBox = new VBox(6);
         searchBox.setAlignment(Pos.CENTER_LEFT);
 
-        MenuButton searchFieldsMenu = new MenuButton("Виберіть поле пошуку");
-        searchFieldsMenu.setStyle("-fx-font-size: 14px;");
-        ToggleGroup toggleGroup = new ToggleGroup();
-        String[] fields = {"Назва депозиту", "Відсоток", "Мін. сума", "Термін (місяці)", "Валюта"};
-        for (String field : fields) {
-            RadioMenuItem item = new RadioMenuItem(field);
-            item.setToggleGroup(toggleGroup);
-            searchFieldsMenu.getItems().add(item);
-        }
-
         HBox inputContainer = new HBox(8);
         inputContainer.setAlignment(Pos.CENTER_LEFT);
+
         TextField searchField = new TextField();
-        searchField.setPromptText("Введіть значення для пошуку...");
+        searchField.setPromptText("Введіть назву депозиту...");
         searchField.setPrefWidth(220);
         searchField.setStyle("-fx-background-radius: 8; -fx-border-color: #C0BFFF;");
+
         Button btnSearch = new Button("Застосувати");
         btnSearch.setStyle("-fx-background-color: #6C63FF; -fx-text-fill: white; -fx-background-radius: 8;");
         btnSearch.setOnMouseEntered(e -> btnSearch.setStyle("-fx-background-color: #7D74FF; -fx-text-fill: white; -fx-background-radius: 8;"));
         btnSearch.setOnMouseExited(e -> btnSearch.setStyle("-fx-background-color: #6C63FF; -fx-text-fill: white; -fx-background-radius: 8;"));
 
         inputContainer.getChildren().addAll(searchField, btnSearch);
-        searchBox.getChildren().addAll(searchFieldsMenu, inputContainer);
+        searchBox.getChildren().add(inputContainer);
         box.getChildren().add(searchBox);
 
-        // --- Сортування (простий інтерфейс) ---
+// --- Логіка пошуку ---
+        btnSearch.setOnAction(e -> {
+            String q = searchField.getText().trim().toLowerCase();
+            depositsContainer.getChildren().clear();
+            List<Deposit> cached = DepositsCache.getInstance().getDeposits();
+            if (cached == null) cached = new ArrayList<>();
+            for (Deposit d : cached) {
+                if (q.isEmpty() || d.getName().toLowerCase().contains(q)) {
+                    depositsContainer.getChildren().add(createDepositCard(d, box));
+                }
+            }
+        });
+
+        // --- Сортування ---
         HBox sortContainer = new HBox(10);
         sortContainer.setAlignment(Pos.CENTER_LEFT);
         sortContainer.setPadding(new Insets(5, 0, 5, 0));
         MenuButton sortMenu = new MenuButton("Параметри сортування");
         sortMenu.setStyle("-fx-font-size: 14px;");
+
         CheckMenuItem sortName = new CheckMenuItem("Назвою");
         CheckMenuItem sortRate = new CheckMenuItem("Відсотком");
         CheckMenuItem sortAmount = new CheckMenuItem("Мін. сумою");
-        sortMenu.getItems().addAll(sortName, sortRate, sortAmount);
+        CheckMenuItem sortTerm = new CheckMenuItem("Терміном");
+        CheckMenuItem sortEarlyWithdraw = new CheckMenuItem("Можливістю дострокового зняття");
+
+        sortMenu.getItems().addAll(sortName, sortRate, sortAmount, sortTerm, sortEarlyWithdraw);
 
         Button btnApplySort = new Button("Застосувати");
         btnApplySort.setStyle("-fx-background-color: #6C63FF; -fx-text-fill: white; -fx-background-radius: 8;");
@@ -305,45 +315,58 @@ public class BankApp extends Application {
         sortContainer.getChildren().addAll(sortMenu, btnApplySort);
         box.getChildren().add(sortContainer);
 
-        // --- Список депозитів у ScrollPane ---
+        // --- Список депозитів ---
         ScrollPane scrollPane = new ScrollPane();
         depositsContainer = new VBox(10);
         depositsContainer.setPadding(new Insets(10));
         scrollPane.setContent(depositsContainer);
         scrollPane.setFitToWidth(true);
         box.getChildren().add(scrollPane);
+        
 
-        // Кнопки дії (підключити фільтр/сортування)
-        btnSearch.setOnAction(e -> {
-            // тимчасово: просто фільтр за назвою, якщо обрано поле "Назва депозиту"
-            RadioMenuItem sel = (RadioMenuItem) toggleGroup.getSelectedToggle();
-            String q = searchField.getText().trim().toLowerCase();
-            depositsContainer.getChildren().clear();
+        // --- Логіка сортування ---
+        btnApplySort.setOnAction(e -> {
             List<Deposit> cached = DepositsCache.getInstance().getDeposits();
             if (cached == null) cached = new ArrayList<>();
-            for (Deposit d : cached) {
-                if (q.isEmpty() || (sel != null && sel.getText().equals("Назва депозиту") && d.getName().toLowerCase().contains(q))
-                        || q.isEmpty() && (sel == null)) {
-                    depositsContainer.getChildren().add(createDepositCard(d, box));
-                }
+
+            List<Deposit> sorted = new ArrayList<>(cached);
+
+            // --- Список вибраних компараторів ---
+            List<Comparator<Deposit>> comparators = new ArrayList<>();
+
+            if (sortName.isSelected())
+                comparators.add(Comparator.comparing(Deposit::getName, String.CASE_INSENSITIVE_ORDER));
+
+            if (sortRate.isSelected())
+                comparators.add(Comparator.comparingDouble(Deposit::getInterestRate).reversed());
+
+            if (sortAmount.isSelected())
+                comparators.add(Comparator.comparingDouble(Deposit::getMinAmount));
+
+            if (sortTerm.isSelected())
+                comparators.add(Comparator.comparingInt(Deposit::getTermMonths));
+
+            if (sortEarlyWithdraw.isSelected())
+                comparators.add(Comparator.comparing(Deposit::isEarlyWithdrawal).reversed());
+
+            // --- Комбінуємо всі вибрані компаратори ---
+            Comparator<Deposit> finalComparator = comparators.stream()
+                    .reduce(Comparator::thenComparing)
+                    .orElse((d1, d2) -> 0); // якщо нічого не вибрано — залишаємо порядок як є
+
+            sorted.sort(finalComparator);
+
+            depositsContainer.getChildren().clear();
+            for (Deposit dep : sorted) {
+                depositsContainer.getChildren().add(createDepositCard(dep, box));
             }
         });
 
-        btnApplySort.setOnAction(e -> {
-            // тут можна додати реальну логіку сортування; для зараз — просто повідомлення
-            List<String> sel = new ArrayList<>();
-            if (sortName.isSelected()) sel.add("Назвою");
-            if (sortRate.isSelected()) sel.add("Відсотком");
-            if (sortAmount.isSelected()) sel.add("Мін. сумою");
-            System.out.println("Сортування застосоване: " + (sel.isEmpty() ? "нічого" : String.join(", ", sel)));
-        });
-
-        // --- Завантаження депозитів у фоні з кеша / API ---
+        // --- Завантаження депозитів ---
         new Thread(() -> {
             List<Deposit> deposits = DepositsCache.getInstance().loadDeposits(20);
-            if (deposits == null) deposits = new ArrayList<>(); // безпечний fallback
+            if (deposits == null) deposits = new ArrayList<>();
 
-            // Оновлюємо UI в JavaFX-потоці
             final List<Deposit> finalDeposits = deposits;
             Platform.runLater(() -> {
                 depositsContainer.getChildren().clear();
@@ -391,20 +414,6 @@ public class BankApp extends Application {
         Label id = new Label("ID користувача: " + currentUser.getUserId());
         Label role = new Label("Роль: " + (currentUser.isAdmin() ? "Адміністратор" : "Звичайний користувач"));
 
-
-        // 🔹 Баланс користувача
-        Label walletBalance = new Label("💵 Баланс: ...");
-        walletBalance.setStyle("-fx-font-size: 15px; -fx-text-fill: #2E2B5F; -fx-font-weight: bold;");
-        userInfo.getChildren().add(walletBalance);
-
-        // Асинхронно підтягуємо баланс з API
-        new Thread(() -> {
-            double balance = api.getWalletBalance(currentUser.getUserId());
-            Platform.runLater(() -> {
-                walletBalance.setText(String.format("💵 Баланс: %.2f UAH", balance));
-            });
-        }).start();
-        userInfo.getChildren().addAll(header, username, id, role);
 
         // Контейнер для депозитів
         VBox depositsBox = new VBox(10);
@@ -576,7 +585,6 @@ public class BankApp extends Application {
         container.getChildren().addAll(searchBox, scrollPane);
         return container;
     }
-
 
 
 
@@ -1029,8 +1037,6 @@ public class BankApp extends Application {
         // тут можна буде додати логіку для кнопок редагування/видалення
         return card;
     }
-
-
 
 
 

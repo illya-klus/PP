@@ -759,35 +759,7 @@ public class APIrequester {
         }
     }
 
-    public double getWalletBalance(int userId) {
-        try {
-            String requestUrl = BASE_URL + "wallets?select=money&userid=eq." + userId;
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(requestUrl))
-                    .header("apikey", API_KEY)
-                    .header("Authorization", "Bearer " + API_KEY)
-                    .header("Accept", "application/json")
-                    .GET()
-                    .build();
 
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            String body = response.body().trim();
-
-            System.out.println("getWalletBalance response: " + body);
-
-            if (response.statusCode() != 200 || !body.startsWith("[")) return 0.0;
-
-            JSONArray arr = new JSONArray(body);
-            if (arr.length() == 0) return 0.0;
-
-            return arr.getJSONObject(0).optDouble("money", 0.0);
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            System.out.println("❌ Помилка при виконанні getWalletBalance()");
-            return 0.0;
-        }
-    }
     public double getDepositBalance(int openDepositId) {
         try {
             String requestUrl = BASE_URL + "opendeposits?select=moneyondeposit&opendepositid=eq." + openDepositId;
@@ -817,8 +789,6 @@ public class APIrequester {
             return 0.0;
         }
     }
-
-
 
     private void showAlert(String title, String message) {
         javafx.application.Platform.runLater(() -> {
