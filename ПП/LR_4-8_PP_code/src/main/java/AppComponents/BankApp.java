@@ -34,7 +34,7 @@ import javafx.util.Duration;
 
 
 import java.util.ArrayList;
-import java.util.Comparator;
+
 import java.util.List;
 
 
@@ -395,6 +395,33 @@ public class BankApp extends Application {
         -fx-cursor: hand;
         -fx-padding: 5 15 5 15;
     """);
+        btnSearch.setOnAction(e -> {
+            String query = searchField.getText().trim().toLowerCase();
+
+            // Завантажуємо депозити з кешу
+            List<Deposit> allDeposits = DepositsCache.getInstance().getDeposits();
+
+            // Фільтруємо за назвою
+            List<Deposit> filtered = new ArrayList<>();
+            for (Deposit dep : allDeposits) {
+                if (dep.getName().toLowerCase().contains(query)) {
+                    filtered.add(dep);
+                }
+            }
+
+            // Оновлюємо UI
+            depositsContainer.getChildren().clear();
+            if (filtered.isEmpty()) {
+                Label emptyLabel = new Label("Депозити не знайдені.");
+                emptyLabel.setStyle("-fx-text-fill: gray; -fx-font-style: italic;");
+                depositsContainer.getChildren().add(emptyLabel);
+            } else {
+                for (Deposit dep : filtered) {
+                    depositsContainer.getChildren().add(createDepositCard(dep, depositsContainer));
+                }
+            }
+        });
+
         btnSearch.setOnMouseEntered(e -> btnSearch.setStyle("-fx-background-color: #7D74FF; -fx-text-fill: white; -fx-background-radius: 8; -fx-font-weight: bold;"));
         btnSearch.setOnMouseExited(e -> btnSearch.setStyle("-fx-background-color: #6C63FF; -fx-text-fill: white; -fx-background-radius: 8; -fx-font-weight: bold;"));
 
@@ -448,8 +475,28 @@ public class BankApp extends Application {
         box.getChildren().add(scrollPane);
 
         // --- Логіка пошуку та сортування залишається без змін ---
-        btnSearch.setOnAction(e -> { /* логіка пошуку */ });
-        btnApplySort.setOnAction(e -> { /* логіка сортування */ });
+        btnApplySort.setOnAction(e -> {
+            List<Deposit> deposits = DepositsCache.getInstance().getDeposits();
+            depositsContainer.getChildren().clear();
+
+            // Сортування по вибраному параметру
+            if (sortName.isSelected()) {
+                deposits.sort((d1, d2) -> d1.getName().compareToIgnoreCase(d2.getName()));
+            } else if (sortRate.isSelected()) {
+                deposits.sort((d1, d2) -> Double.compare(d2.getInterestRate(), d1.getInterestRate()));
+            } else if (sortAmount.isSelected()) {
+                deposits.sort((d1, d2) -> Double.compare(d2.getMinAmount(), d1.getMinAmount()));
+            } else if (sortTerm.isSelected()) {
+                deposits.sort((d1, d2) -> Integer.compare(d2.getTermMonths(), d1.getTermMonths()));
+            } else if (sortEarlyWithdraw.isSelected()) {
+                deposits.sort((d1, d2) -> Boolean.compare(d2.isEarlyWithdrawal(), d1.isEarlyWithdrawal()));
+            }
+
+            // Оновлюємо UI
+            for (Deposit dep : deposits) {
+                depositsContainer.getChildren().add(createDepositCard(dep, depositsContainer));
+            }
+        });
 
         // --- Завантаження депозитів ---
         new Thread(() -> {
@@ -550,6 +597,7 @@ public class BankApp extends Application {
         box.getChildren().addAll(userInfo, scroll);
         return box;
     }
+
     private Pane createBanksPage() {
         VBox container = new VBox(15);
         container.setPadding(new Insets(20));
@@ -698,7 +746,6 @@ public class BankApp extends Application {
         container.getChildren().addAll(searchBox, scrollPane);
         return container;
     }
-
 
 
     //сторінки меню адміна
@@ -983,65 +1030,6 @@ public class BankApp extends Application {
         wrapper.setPrefSize(800, 600);
 
         return wrapper;
-    }
-    private HBox createBankCard(int id, String name, String address, String url, String phone) {
-        HBox card = new HBox(15);
-        card.setAlignment(Pos.CENTER_LEFT);
-        card.setPadding(new Insets(12));
-        card.setStyle("""
-        -fx-background-color: #ffffff;
-        -fx-background-radius: 12;
-        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 6,0,0,2);
-    """);
-
-        VBox info = new VBox(5);
-        Label idLbl = new Label("ID: " + id);
-        Label nameLbl = new Label("Назва: " + name);
-        Label addrLbl = new Label("Адреса: " + address);
-        Label urlLbl = new Label("Вебсайт: " + (url.isEmpty() ? "немає" : url));
-        Label phoneLbl = new Label("Телефон: " + phone);
-        info.getChildren().addAll(idLbl, nameLbl, addrLbl, urlLbl, phoneLbl);
-
-        Button editBtn = new Button("✏️");
-        editBtn.setStyle("-fx-background-color: #FFB74D; -fx-text-fill: white; -fx-background-radius: 6;");
-        editBtn.setOnMouseEntered(e -> editBtn.setStyle("-fx-background-color: #FFA726; -fx-text-fill: white; -fx-background-radius: 6;"));
-        editBtn.setOnMouseExited(e -> editBtn.setStyle("-fx-background-color: #FFB74D; -fx-text-fill: white; -fx-background-radius: 6;"));
-
-        Button deleteBtn = new Button("🗑️");
-        deleteBtn.setStyle("-fx-background-color: #F44336; -fx-text-fill: white; -fx-background-radius: 6;");
-        deleteBtn.setOnMouseEntered(e -> deleteBtn.setStyle("-fx-background-color: #E53935; -fx-text-fill: white; -fx-background-radius: 6;"));
-        deleteBtn.setOnMouseExited(e -> deleteBtn.setStyle("-fx-background-color: #F44336; -fx-text-fill: white; -fx-background-radius: 6;"));
-
-        deleteBtn.setOnAction(e -> {
-            boolean success = api.deleteBank(id);
-            if (success) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("✅ Успіх");
-                alert.setHeaderText(null);
-                alert.setContentText("Банк успішно видалено!");
-                alert.showAndWait();
-            }
-        });
-
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        HBox buttons = new HBox(8, editBtn, deleteBtn);
-        card.getChildren().addAll(info, spacer, buttons);
-
-        // Hover ефект для картки
-        card.setOnMouseEntered(e -> card.setStyle("""
-        -fx-background-color: #F8F7FF;
-        -fx-background-radius: 12;
-        -fx-effect: dropshadow(gaussian, rgba(108,99,255,0.25), 8,0,0,3);
-    """));
-        card.setOnMouseExited(e -> card.setStyle("""
-        -fx-background-color: #ffffff;
-        -fx-background-radius: 12;
-        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 6,0,0,2);
-    """));
-
-        return card;
     }
 
 
@@ -1330,8 +1318,12 @@ public class BankApp extends Application {
 
         // Підвантаження актуальної суми асинхронно
         new Thread(() -> {
-            double actualAmount = api.getDepositBalance(dep.getOpenDepositId());
-            Platform.runLater(() -> currentAmount.setText(String.format("На депозиті: %.2f %s", actualAmount, dep.getCurrency())));
+            double actualAmount = dep.getMoneyOnDeposit(); // можна брати з обʼєкта
+            if (dep.getOpenDepositId() != 0) {
+                actualAmount = dep.api.getDepositBalance(dep.getOpenDepositId());
+            }
+            double finalActualAmount = actualAmount;
+            Platform.runLater(() -> currentAmount.setText(String.format("На депозиті: %.2f %s", finalActualAmount, dep.getCurrency())));
         }).start();
 
         // Дати
@@ -1369,6 +1361,45 @@ public class BankApp extends Application {
             -fx-background-radius: 8;
             -fx-cursor: hand;
         """);
+
+            // Обробник кнопки "Закрити депозит"
+            closeBtn.setOnAction(e -> {
+                new Thread(() -> {
+                    dep.closeDeposit(); // виклик API через Deposit
+                    Platform.runLater(() -> {
+                        status.setText("Статус: ⚫ Закрито");
+                        status.setStyle("-fx-text-fill: #9E9E9E; -fx-font-weight: bold;");
+                        endDate.setText("Закрито: " + java.time.LocalDate.now().toString());
+                        actions.setVisible(false); // ховаємо кнопки
+                    });
+                }).start();
+            });
+
+            // Обробник кнопки "Поповнити"
+            topUpBtn.setOnAction(e -> {
+                TextInputDialog dialog = new TextInputDialog();
+                dialog.setTitle("Поповнення депозиту");
+                dialog.setHeaderText("Введіть суму для поповнення:");
+                dialog.setContentText("Сума:");
+                dialog.showAndWait().ifPresent(input -> {
+                    try {
+                        double amount = Double.parseDouble(input);
+                        new Thread(() -> {
+                            dep.topUp(amount);
+                            double newBalance = dep.api.getDepositBalance(dep.getOpenDepositId());
+                            Platform.runLater(() -> currentAmount.setText(String.format("На депозиті: %.2f %s", newBalance, dep.getCurrency())));
+                        }).start();
+                    } catch (NumberFormatException ex) {
+                        Platform.runLater(() -> {
+                            Alert alert = new Alert(Alert.AlertType.WARNING);
+                            alert.setTitle("Помилка");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Некоректна сума!");
+                            alert.showAndWait();
+                        });
+                    }
+                });
+            });
 
             actions.getChildren().addAll(closeBtn, topUpBtn);
             card.getChildren().add(actions);

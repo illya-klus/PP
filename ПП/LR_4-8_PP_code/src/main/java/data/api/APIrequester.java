@@ -35,29 +35,6 @@ public class APIrequester {
     private final HttpClient client = HttpClient.newHttpClient();
 
 
-    public User loginUser(String login, String password) {
-        try {
-            String requestUrl = BASE_URL + "users?login=eq." + login + "&password=eq." + password;
-
-            HttpRequest request = buildRequest(requestUrl);
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            JSONArray arr = new JSONArray(response.body().trim());
-            if (arr.isEmpty()) return null;
-
-            JSONObject obj = arr.getJSONObject(0);
-            int userId = obj.getInt("userid");
-            boolean isAdmin = obj.optBoolean("isadmin", false);
-
-            User user = new User(userId, login, isAdmin);
-            UserSession.getInstance().login(user);
-
-            return user;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }
     public User checkUser(String login, String password) {
         try {
             String requestUrl = BASE_URL + "users?login=eq." + login + "&password=eq." + password;
