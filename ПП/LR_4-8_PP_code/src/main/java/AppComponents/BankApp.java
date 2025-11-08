@@ -597,7 +597,6 @@ public class BankApp extends Application {
         box.getChildren().addAll(userInfo, scroll);
         return box;
     }
-
     private Pane createBanksPage() {
         VBox container = new VBox(15);
         container.setPadding(new Insets(20));
@@ -932,6 +931,7 @@ public class BankApp extends Application {
         return card;
     }
 
+
     private Pane createEditBanksPage() {
         VBox root = new VBox(20);
         root.setPadding(new Insets(20));
@@ -1015,6 +1015,47 @@ public class BankApp extends Application {
         bankCards.setAlignment(Pos.CENTER_LEFT);
         bankCards.setPadding(new Insets(10));
 
+        // 🔹 Додавання банку
+        addBtn.setOnAction(e -> {
+            boolean success = api.addBank(nameField.getText(), addrField.getText(), urlField.getText(), phoneField.getText());
+            if (success) {
+                // Додати картку банку до UI
+                bankCards.getChildren().add(createBankCard(0, nameField.getText(), addrField.getText(), urlField.getText(), phoneField.getText()));
+                // Очистити поля
+                nameField.clear();
+                addrField.clear();
+                urlField.clear();
+                phoneField.clear();
+            }
+        });
+
+        findBtn.setOnAction(e -> {
+            bankCards.getChildren().clear(); // Очищаємо контейнер перед новими результатами
+
+            List<Bank> foundBanks = api.findBanks(
+                    nameField.getText().isEmpty() ? null : nameField.getText(),
+                    addrField.getText().isEmpty() ? null : addrField.getText(),
+                    urlField.getText().isEmpty() ? null : urlField.getText(),
+                    phoneField.getText().isEmpty() ? null : phoneField.getText()
+            );
+
+            if (foundBanks == null || foundBanks.isEmpty()) {
+                Label noBanks = new Label("❌ Банків не знайдено");
+                noBanks.setStyle("-fx-text-fill: #888; -fx-font-style: italic;");
+                bankCards.getChildren().add(noBanks);
+            } else {
+                for (Bank bank : foundBanks) {
+                    bankCards.getChildren().add(createBankCard(
+                            bank.getBankId(),
+                            bank.getName(),
+                            bank.getAddress(),
+                            bank.getWebUrl(),
+                            bank.getPhoneNumber()
+                    ));
+                }
+            }
+        });
+
         // Додаємо контент
         root.getChildren().addAll(title, formBox, bankCards);
 
@@ -1030,6 +1071,45 @@ public class BankApp extends Application {
         wrapper.setPrefSize(800, 600);
 
         return wrapper;
+    }
+    private HBox createBankCard(int id, String name, String address, String webUrl, String phone) {
+        HBox card = new HBox(15);
+        card.setAlignment(Pos.CENTER_LEFT);
+        card.setPadding(new Insets(12));
+        card.setStyle("""
+        -fx-background-color: #FFFFFF;
+        -fx-background-radius: 12;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8,0,0,3);
+    """);
+
+        VBox infoBox = new VBox(4);
+        infoBox.getChildren().addAll(
+                new Label("Назва: " + name),
+                new Label("Адреса: " + address),
+                new Label("Сайт: " + webUrl),
+                new Label("Телефон: " + phone)
+        );
+
+        Button deleteBtn = new Button("Видалити");
+        deleteBtn.setStyle("""
+        -fx-background-color: #f44336;
+        -fx-text-fill: white;
+        -fx-font-weight: bold;
+        -fx-background-radius: 6;
+        -fx-cursor: hand;
+    """);
+
+        deleteBtn.setOnAction(e -> {
+            if (api.deleteBank(id)) {
+                ((VBox) card.getParent()).getChildren().remove(card);
+            }
+        });
+
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        card.getChildren().addAll(infoBox, spacer, deleteBtn);
+        return card;
     }
 
 

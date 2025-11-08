@@ -766,7 +766,6 @@ public class APIrequester {
             return 0.0;
         }
     }
-
     private void showAlert(String title, String message) {
         javafx.application.Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -776,7 +775,6 @@ public class APIrequester {
             alert.showAndWait();
         });
     }
-
     private HttpRequest buildRequest(String url) {
         return HttpRequest.newBuilder()
                 .uri(URI.create(url))
