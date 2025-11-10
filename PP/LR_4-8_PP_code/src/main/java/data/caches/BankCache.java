@@ -31,4 +31,7 @@ public class BankCache {
         return banks;
     }
 
+    public List<Bank> getBanks() {
+        return banks;
+    }
 }

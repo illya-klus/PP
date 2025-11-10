@@ -77,7 +77,7 @@ public class APIrequester {
             System.out.println("getDeposits response: " + response.body());
 
             if (response.statusCode() != 200) {
-                showAlert("Помилка", "Не вдалося завантажити депозити (код: " + response.statusCode() + ")");
+                showAlertSafe("Помилка", "Не вдалося завантажити депозити (код: " + response.statusCode() + ")");
                 return deposits;
             }
 
@@ -108,7 +108,7 @@ public class APIrequester {
 
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("Помилка", "Сталася помилка при отриманні депозитів!");
+            showAlertSafe("Помилка", "Сталася помилка при отриманні депозитів!");
         }
 
         return deposits;
@@ -356,7 +356,7 @@ public class APIrequester {
     public boolean addUser(String login, String password, boolean isAdmin) {
         try {
             if (login == null || login.isEmpty() || password == null || password.isEmpty()) {
-                showAlert("Помилка", "Усі поля користувача повинні бути заповнені!");
+                showAlertSafe("Помилка", "Усі поля користувача повинні бути заповнені!");
                 return false;
             }
 
@@ -378,7 +378,7 @@ public class APIrequester {
             return response.statusCode() == 201; // Created
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("Помилка", "Не вдалося додати користувача!");
+            showAlertSafe("Помилка", "Не вдалося додати користувача!");
             return false;
         }
     }
@@ -388,7 +388,7 @@ public class APIrequester {
                     address == null || address.isEmpty() ||
                     webUrl == null || webUrl.isEmpty() ||
                     phone == null || phone.isEmpty()) {
-                showAlert("Помилка", "Усі поля банку повинні бути заповнені!");
+                showAlertSafe("Помилка", "Усі поля банку повинні бути заповнені!");
                 return false;
             }
 
@@ -411,7 +411,7 @@ public class APIrequester {
             return response.statusCode() == 201;
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("Помилка", "Не вдалося додати банк!");
+            showAlertSafe("Помилка", "Не вдалося додати банк!");
             return false;
         }
     }
@@ -421,7 +421,7 @@ public class APIrequester {
                     bankId == null || bankId <= 0 ||
                     rate == null || term == null || minAmount == null ||
                     currency == null || currency.isEmpty()) {
-                showAlert("Помилка", "Не всі поля депозиту заповнені або мають некоректні значення!");
+                showAlertSafe("Помилка", "Не всі поля депозиту заповнені або мають некоректні значення!");
                 return false;
             }
 
@@ -448,7 +448,7 @@ public class APIrequester {
             return response.statusCode() == 201;
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("Помилка", "Не вдалося додати депозит!");
+            showAlertSafe("Помилка", "Не вдалося додати депозит!");
             return false;
         }
     }
@@ -457,7 +457,7 @@ public class APIrequester {
     public boolean deleteUser(int userId) {
         try {
             if (userId <= 0) {
-                showAlert("Помилка", "Некоректний ID користувача!");
+                showAlertSafe("Помилка", "Некоректний ID користувача!");
                 return false;
             }
 
@@ -473,19 +473,19 @@ public class APIrequester {
             if (response.statusCode() == 200 || response.statusCode() == 204) {
                 return true;
             } else {
-                showAlert("Помилка", "Не вдалося видалити користувача!");
+                showAlertSafe("Помилка", "Не вдалося видалити користувача!");
                 return false;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("Помилка", "Не вдалося видалити користувача!");
+            showAlertSafe("Помилка", "Не вдалося видалити користувача!");
             return false;
         }
     }
     public boolean deleteBank(int bankId) {
         try {
             if (bankId <= 0) {
-                showAlert("Помилка", "Некоректний ID банку!");
+                showAlertSafe("Помилка", "Некоректний ID банку!");
                 return false;
             }
 
@@ -501,19 +501,19 @@ public class APIrequester {
             if (response.statusCode() == 200 || response.statusCode() == 204) {
                 return true;
             } else {
-                showAlert("Помилка", "Не вдалося видалити банк!");
+                showAlertSafe("Помилка", "Не вдалося видалити банк!");
                 return false;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("Помилка", "Не вдалося видалити банк!");
+            showAlertSafe("Помилка", "Не вдалося видалити банк!");
             return false;
         }
     }
     public boolean deleteDeposit(int depositId) {
         try {
             if (depositId <= 0) {
-                showAlert("Помилка", "Некоректний ID депозиту!");
+                showAlertSafe("Помилка", "Некоректний ID депозиту!");
                 return false;
             }
 
@@ -529,12 +529,12 @@ public class APIrequester {
             if (response.statusCode() == 200 || response.statusCode() == 204) {
                 return true;
             } else {
-                showAlert("Помилка", "Не вдалося видалити депозит!");
+                showAlertSafe("Помилка", "Не вдалося видалити депозит!");
                 return false;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("Помилка", "Не вдалося видалити депозит!");
+            showAlertSafe("Помилка", "Не вдалося видалити депозит!");
             return false;
         }
     }
@@ -542,6 +542,7 @@ public class APIrequester {
 
 
     public boolean closeUserDepositById(int openDepositId) {
+        if(openDepositId <= 0) {return false;}
         try {
             String today = LocalDate.now().toString();
             JSONObject json = new JSONObject();
@@ -563,7 +564,7 @@ public class APIrequester {
             return response.statusCode() == 200 || response.statusCode() == 204;
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("Помилка", "Не вдалося закрити депозит!");
+            showAlertSafe("Помилка", "Не вдалося закрити депозит!");
             return false;
         }
     }
@@ -589,7 +590,7 @@ public class APIrequester {
             return response.statusCode() == 200 || response.statusCode() == 204;
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("Помилка", "Не вдалося виконати дострокове зняття!");
+            showAlertSafe("Помилка", "Не вдалося виконати дострокове зняття!");
             return false;
         }
     }
@@ -607,13 +608,13 @@ public class APIrequester {
 
             HttpResponse<String> checkResponse = client.send(checkRequest, HttpResponse.BodyHandlers.ofString());
             if (checkResponse.statusCode() != 200) {
-                showAlert("Помилка", "Не вдалося перевірити стан депозиту!");
+                showAlertSafe("Помилка", "Не вдалося перевірити стан депозиту!");
                 return false;
             }
 
             JSONArray existing = new JSONArray(checkResponse.body());
             if (!existing.isEmpty()) {
-                showAlert("Помилка", "Цей депозит уже відкритий для поточного користувача!");
+                showAlertSafe("Помилка", "Цей депозит уже відкритий для поточного користувача!");
                 return false;
             }
 
@@ -637,23 +638,23 @@ public class APIrequester {
             System.out.println("openUserDeposit response: " + response.body());
 
             if (response.statusCode() == 201 || response.statusCode() == 200) {
-                showAlert("Успіх", "Депозит успішно відкрито!");
+                showAlertSafe("Успіх", "Депозит успішно відкрито!");
                 return true;
             } else {
-                showAlert("Помилка", "Не вдалося відкрити депозит!");
+                showAlertSafe("Помилка", "Не вдалося відкрити депозит!");
                 return false;
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("Помилка", "Виникла помилка при відкритті депозиту!");
+            showAlertSafe("Помилка", "Виникла помилка при відкритті депозиту!");
             return false;
         }
     }
     public boolean topUpUserDeposit(int openDepositId, double amount) {
         try {
             if (amount <= 0) {
-                showAlert("Помилка", "Сума має бути більшою за 0!");
+                showAlertSafe("Помилка", "Сума має бути більшою за 0!");
                 return false;
             }
 
@@ -669,13 +670,13 @@ public class APIrequester {
 
             HttpResponse<String> getResponse = client.send(getRequest, HttpResponse.BodyHandlers.ofString());
             if (getResponse.statusCode() != 200) {
-                showAlert("Помилка", "Не вдалося отримати дані депозиту!");
+                showAlertSafe("Помилка", "Не вдалося отримати дані депозиту!");
                 return false;
             }
 
             JSONArray jsonArray = new JSONArray(getResponse.body());
             if (jsonArray.isEmpty()) {
-                showAlert("Помилка", "Депозит не знайдено!");
+                showAlertSafe("Помилка", "Депозит не знайдено!");
                 return false;
             }
 
@@ -700,16 +701,16 @@ public class APIrequester {
             System.out.println("topUpUserDeposit response: " + patchResponse.body());
 
             if (patchResponse.statusCode() == 200 || patchResponse.statusCode() == 204) {
-                showAlert("Успіх", "Депозит успішно поповнено на " + amount + "!");
+                showAlertSafe("Успіх", "Депозит успішно поповнено на " + amount + "!");
                 return true;
             } else {
-                showAlert("Помилка", "Не вдалося оновити депозит!");
+                showAlertSafe("Помилка", "Не вдалося оновити депозит!");
                 return false;
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("Помилка", "Не вдалося поповнити депозит!");
+            showAlertSafe("Помилка", "Не вдалося поповнити депозит!");
             return false;
         }
     }
@@ -736,6 +737,20 @@ public class APIrequester {
         }
     }
 
+    private void showAlertSafe(String title, String message) {
+        try {
+            javafx.application.Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle(title);
+                alert.setHeaderText(null);
+                alert.setContentText(message);
+                alert.showAndWait();
+            });
+        } catch (IllegalStateException e) {
+            // Якщо JavaFX не ініціалізований, просто виводимо в консоль
+            System.out.println("ALERT [" + title + "]: " + message);
+        }
+    }
 
     public double getDepositBalance(int openDepositId) {
         try {
@@ -765,15 +780,6 @@ public class APIrequester {
             System.out.println("❌ Помилка при виконанні getDepositBalance()");
             return 0.0;
         }
-    }
-    private void showAlert(String title, String message) {
-        javafx.application.Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle(title);
-            alert.setHeaderText(null);
-            alert.setContentText(message);
-            alert.showAndWait();
-        });
     }
     private HttpRequest buildRequest(String url) {
         return HttpRequest.newBuilder()
