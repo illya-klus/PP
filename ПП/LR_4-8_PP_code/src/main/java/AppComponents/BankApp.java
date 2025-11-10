@@ -288,61 +288,64 @@ public class BankApp extends Application {
         HBox actionCards = new HBox(15);
         actionCards.setPadding(new Insets(10, 0, 0, 0));
 
-        // Картка "Усі депозити"
-        VBox depositsCard = new VBox(8);
-        depositsCard.setPadding(new Insets(15));
-        depositsCard.setAlignment(Pos.CENTER);
-        depositsCard.setStyle("""
+        if(! UserSession.getInstance().getCurrentUser().isAdmin()){
+            // Картка "Усі депозити"
+            VBox depositsCard = new VBox(8);
+            depositsCard.setPadding(new Insets(15));
+            depositsCard.setAlignment(Pos.CENTER);
+            depositsCard.setStyle("""
         -fx-background-color: #6C63FF;
         -fx-background-radius: 12;
         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0, 0, 2);
     """);
-        Label depositsLbl = new Label("Усі депозити");
-        depositsLbl.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
-        depositsCard.getChildren().add(depositsLbl);
-        depositsCard.setOnMouseEntered(e -> depositsCard.setStyle("""
+            Label depositsLbl = new Label("Усі депозити");
+            depositsLbl.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
+            depositsCard.getChildren().add(depositsLbl);
+            depositsCard.setOnMouseEntered(e -> depositsCard.setStyle("""
         -fx-background-color: #7D74FF;
         -fx-background-radius: 12;
         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 8, 0, 0, 3);
     """));
-        depositsCard.setOnMouseExited(e -> depositsCard.setStyle("""
+            depositsCard.setOnMouseExited(e -> depositsCard.setStyle("""
         -fx-background-color: #6C63FF;
         -fx-background-radius: 12;
         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0, 0, 2);
     """));
-        depositsCard.setOnMouseClicked(e -> {
-            previousPane.add((Pane) rootPane.getCenter());
-            rootPane.setCenter(createDepositsPane(false));
-        });
+            depositsCard.setOnMouseClicked(e -> {
+                previousPane.add((Pane) rootPane.getCenter());
+                rootPane.setCenter(createDepositsPane(false));
+            });
 
-        // Картка "Усі банки"
-        VBox banksCard = new VBox(8);
-        banksCard.setPadding(new Insets(15));
-        banksCard.setAlignment(Pos.CENTER);
-        banksCard.setStyle("""
+            // Картка "Усі банки"
+            VBox banksCard = new VBox(8);
+            banksCard.setPadding(new Insets(15));
+            banksCard.setAlignment(Pos.CENTER);
+            banksCard.setStyle("""
         -fx-background-color: #FF6B6B;
         -fx-background-radius: 12;
         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0, 0, 2);
     """);
-        Label banksLbl = new Label("Усі банки");
-        banksLbl.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
-        banksCard.getChildren().add(banksLbl);
-        banksCard.setOnMouseEntered(e -> banksCard.setStyle("""
+            Label banksLbl = new Label("Усі банки");
+            banksLbl.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
+            banksCard.getChildren().add(banksLbl);
+            banksCard.setOnMouseEntered(e -> banksCard.setStyle("""
         -fx-background-color: #FF8787;
         -fx-background-radius: 12;
         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 8, 0, 0, 3);
     """));
-        banksCard.setOnMouseExited(e -> banksCard.setStyle("""
+            banksCard.setOnMouseExited(e -> banksCard.setStyle("""
         -fx-background-color: #FF6B6B;
         -fx-background-radius: 12;
         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0, 0, 2);
     """));
-        banksCard.setOnMouseClicked(e -> {
-            previousPane.add((Pane) rootPane.getCenter());
-            rootPane.setCenter(createBanksPage());
-        });
+            banksCard.setOnMouseClicked(e -> {
+                previousPane.add((Pane) rootPane.getCenter());
+                rootPane.setCenter(createBanksPage());
+            });
 
-        actionCards.getChildren().addAll(depositsCard, banksCard);
+            actionCards.getChildren().addAll(depositsCard, banksCard);
+        }
+
 
         vbox.getChildren().addAll(header, separator, description, actionCards);
         return vbox;
