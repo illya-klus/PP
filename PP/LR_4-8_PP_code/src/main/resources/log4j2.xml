@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="DEBUG">
+    <Appenders>
+        <!-- Простий File Appender (без ротації) -->
+        <File name="FileLogger" fileName="logs/app.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} | %-5p | %c{1} | %m%n"/>
+        </File>
+
+        <!-- Консоль -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss} [%t] %-5level - %msg%n"/>
+        </Console>
+
+        <!-- Email -->
+        <!--- <SMTP name="Email"
+              subject="🚨 CRITICAL ERROR: Banking App"
+              to="illia.klus.oi.2024@lpnu.ua"
+              from="illyaklus2@gmail.com"
+              smtpHost="smtp.gmail.com"
+              smtpPort="587"
+              smtpUsername="illyaklus2@gmail.com"
+              smtpPassword="tyhi vyod zuux rylz"
+              bufferSize="1"
+              smtpProtocol="smtp"
+              smtpUseStartTLS="true"
+              smtpDebug="true">
+            <PatternLayout pattern="CRITICAL ERROR%n%nTime: %d%nLevel: %p%nMessage: %m%n%nStack:%n%throwable"/>
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+        </SMTP> -->
+    </Appenders>
+
+    <Loggers>
+        <Root level="DEBUG">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="FileLogger"/>
+            <AppenderRef ref="Email"/>
+        </Root>
+    </Loggers>
+</Configuration>

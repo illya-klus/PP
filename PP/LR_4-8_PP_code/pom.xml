@@ -12,6 +12,7 @@
         <maven.compiler.source>24</maven.compiler.source>
         <maven.compiler.target>24</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <javax.mail.version>1.6.2</javax.mail.version>
     </properties>
 
     <dependencies>
@@ -29,12 +30,6 @@
             <version>20230227</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>17.0.2</version>
-            <classifier>win</classifier>
-        </dependency>
 
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -54,6 +49,32 @@
             <version>4.0.16-alpha</version>
             <scope>test</scope>
         </dependency>
+
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.23.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.23.1</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>${javax.mail.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
 
     </dependencies>
 
@@ -100,8 +121,14 @@
 
 
         </plugins>
-
-
     </build>
+
+    <repositories>
+        <repository>
+            <id>eclipse-ee4j</id>
+            <url>https://repo.eclipse.org/content/groups/releases/</url>
+        </repository>
+    </repositories>
+
 
 </project>

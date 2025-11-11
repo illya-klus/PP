@@ -1,5 +1,6 @@
 package AppComponents;
 
+import data.notifiers.EmailNotifer;
 import domain.banks.Bank;
 import data.caches.BankCache;
 import data.caches.DepositsCache;
@@ -37,9 +38,14 @@ import java.util.ArrayList;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class BankApp extends Application {
+
+    private static final Logger logger = LogManager.getLogger(BankApp.class);
+
 
     private VBox depositsContainer; // додати в класі
     private Stage primaryStage;
@@ -56,45 +62,77 @@ public class BankApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-        primaryStage.setResizable(false);
-        primaryStage.setTitle("DepDepDeposit");
+        logger.info("Програма запущена");
 
-        rootPane = new BorderPane();
-        rootPane.setStyle("""
-        -fx-background-color: linear-gradient(to bottom right, #F0F4FF, #E0E8FF);
-        -fx-font-family: 'Segoe UI';
-        -fx-text-fill: #2E2B5F;
-    """);
+        // Тестова критична помилка
+        try {
+            throw new RuntimeException("🚨 DATABASE CONNECTION FAILED: Cannot connect to Supabase");
+        } catch (Exception e) {
+            // Логуємо в файл
+            logger.error("CRITICAL ERROR: Application startup failed", e);
 
-        Pane registerRoot = createRegisterPane();
-        rootPane.setCenter(registerRoot);
+            // Відправляємо email
+            EmailNotifer.sendCriticalError("Database Connection Failed",
+                    "Application cannot connect to database", e);
+        }
 
-        // Тільки стиль BorderPane
-        rootPane.setPadding(new Insets(20));
-        rootPane.setBorder(new Border(new BorderStroke(
-                Color.web("#C0C8FF"),
-                BorderStrokeStyle.SOLID,
-                new CornerRadii(15),
-                new BorderWidths(3)
-        )));
+        try {
+            this.primaryStage = primaryStage;
+            logger.info("Primary stage встановлено");
 
-        // Плавне появлення сцени
-        FadeTransition ft = new FadeTransition(Duration.millis(500), rootPane);
-        ft.setFromValue(0);
-        ft.setToValue(1);
-        ft.play();
+            primaryStage.setResizable(false);
+            primaryStage.setTitle("DepDepDeposit");
+            logger.info("Primary stage налаштований: resizable=false, title=DepDepDeposit");
 
-        scene = new Scene(rootPane, WIDTH, HEIGHT);
+            rootPane = new BorderPane();
+            logger.info("Створено rootPane");
 
-        primaryStage.setScene(scene);
-        primaryStage.show();
+            rootPane.setStyle("""
+            -fx-background-color: linear-gradient(to bottom right, #F0F4FF, #E0E8FF);
+            -fx-font-family: 'Segoe UI';
+            -fx-text-fill: #2E2B5F;
+        """);
+            logger.info("Застосовано стиль до rootPane");
+
+            Pane registerRoot = createRegisterPane();
+            logger.info("Створено registerRoot через createRegisterPane()");
+
+            rootPane.setCenter(registerRoot);
+            logger.info("registerRoot додано до center rootPane");
+
+            // Тільки стиль BorderPane
+            rootPane.setPadding(new Insets(20));
+            rootPane.setBorder(new Border(new BorderStroke(
+                    Color.web("#C0C8FF"),
+                    BorderStrokeStyle.SOLID,
+                    new CornerRadii(15),
+                    new BorderWidths(3)
+            )));
+            logger.info("Налаштовано padding і border rootPane");
+
+            // Плавне появлення сцени
+            FadeTransition ft = new FadeTransition(Duration.millis(500), rootPane);
+            ft.setFromValue(0);
+            ft.setToValue(1);
+            ft.play();
+            logger.info("FadeTransition для rootPane запущено");
+
+            scene = new Scene(rootPane, WIDTH, HEIGHT);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+            logger.info("Сцена встановлена і primaryStage показано");
+
+        } catch (Exception e) {
+            logger.error("Виникла помилка під час старту програми", e);
+            logger.fatal("Критична помилка при start()", e);
+        }
     }
-
 
 
     // Форма реєстрації
     private Pane createRegisterPane() {
+        logger.info("Створюємо панель реєстрації");
+
         GridPane grid = new GridPane();
         grid.setHgap(12);
         grid.setVgap(18);
@@ -108,6 +146,8 @@ public class BankApp extends Application {
         -fx-effect: dropshadow(gaussian, rgba(108,99,255,0.25), 18, 0, 0, 8);
     """);
 
+        logger.info("GridPane створено та стилізовано");
+
         Label title = new Label("DepDepDeposit");
         title.setStyle("""
         -fx-font-size: 24px;
@@ -115,6 +155,7 @@ public class BankApp extends Application {
         -fx-text-fill: #5E56E5;
     """);
         grid.add(title, 0, 0, 2, 1);
+        logger.info("Додано заголовок панелі реєстрації");
 
         TextField tfLogin = new TextField();
         tfLogin.setPromptText("Введіть логін");
@@ -143,6 +184,7 @@ public class BankApp extends Application {
         -fx-cursor: hand;
         -fx-padding: 6 12 6 12;
     """);
+
         btnRegister.setOnMouseEntered(e -> btnRegister.setStyle("-fx-background-color: #7A73FF; -fx-text-fill: white; -fx-background-radius: 12; -fx-padding: 6 12 6 12;"));
         btnRegister.setOnMouseExited(e -> btnRegister.setStyle("-fx-background-color: #5E56E5; -fx-text-fill: white; -fx-background-radius: 12; -fx-padding: 6 12 6 12;"));
 
@@ -152,31 +194,37 @@ public class BankApp extends Application {
         grid.add(pf, 1, 2);
         grid.add(btnRegister, 1, 3);
 
-        // Логіка без змін
+        // Логіка кнопки
         btnRegister.setOnAction(e -> {
             String login = tfLogin.getText();
             String password = pf.getText();
+            logger.info("Спроба входу користувача: " + login);
+
             User user = api.checkUser(login, password);
 
             if (user == null) {
+                logger.warn("Невдала спроба входу для логіна: " + login);
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Помилка");
                 alert.setHeaderText(null);
                 alert.setContentText("Невірний логін або пароль!");
                 alert.showAndWait();
             } else {
+                logger.info("Користувач успішно увійшов: " + login);
                 UserSession.getInstance().login(user);
-
                 rootPane.setTop(createUserMenu(user.isAdmin()));
                 Pane mainPane = createMainPane(login);
                 rootPane.setCenter(mainPane);
             }
         });
 
+        logger.info("Панель реєстрації готова");
         return grid;
     }
     //меню
     private HBox createUserMenu(boolean isAdmin) {
+        logger.info("Створюємо користувацьке меню (isAdmin=" + isAdmin + ")");
+
         HBox topBar = new HBox();
         topBar.setAlignment(Pos.CENTER_RIGHT);
         topBar.setPadding(new Insets(10, 20, 10, 20));
@@ -199,6 +247,7 @@ public class BankApp extends Application {
         backButton.setOnAction(e -> {
             if (!previousPane.isEmpty()) {
                 rootPane.setCenter(previousPane.remove(previousPane.size() - 1));
+                logger.info("Натиснута кнопка Назад, повернення до попередньої панелі");
             }
         });
 
@@ -211,6 +260,7 @@ public class BankApp extends Application {
     """);
 
         if (isAdmin) {
+            logger.info("Додаємо адміністративне меню");
             Menu adminMenu = new Menu("Адмін меню");
             MenuItem banks = new MenuItem("Редагувати банки");
             MenuItem deposits = new MenuItem("Редагувати депозити");
@@ -219,19 +269,23 @@ public class BankApp extends Application {
             banks.setOnAction(e -> {
                 previousPane.add((Pane) rootPane.getCenter());
                 rootPane.setCenter(createEditBanksPage());
+                logger.info("Відкрито сторінку редагування банків");
             });
             deposits.setOnAction(e -> {
                 previousPane.add((Pane) rootPane.getCenter());
                 rootPane.setCenter(createEditDepositsPane());
+                logger.info("Відкрито сторінку редагування депозитів");
             });
             users.setOnAction(e -> {
                 previousPane.add((Pane) rootPane.getCenter());
                 rootPane.setCenter(createEditUserPage());
+                logger.info("Відкрито сторінку редагування користувачів");
             });
 
             adminMenu.getItems().addAll(banks, deposits, users);
             menuBar.getMenus().add(adminMenu);
         } else {
+            logger.info("Додаємо звичайне користувацьке меню");
             Menu userMenu = new Menu("Меню");
             MenuItem profile = new MenuItem("Профіль");
             MenuItem allDeposits = new MenuItem("Усі депозити");
@@ -240,14 +294,17 @@ public class BankApp extends Application {
             profile.setOnAction(e -> {
                 previousPane.add((Pane) rootPane.getCenter());
                 rootPane.setCenter(createProfilePage());
+                logger.info("Відкрито сторінку профілю користувача");
             });
             allDeposits.setOnAction(e -> {
                 previousPane.add((Pane) rootPane.getCenter());
                 rootPane.setCenter(createDepositsPane(false));
+                logger.info("Відкрито сторінку депозитів");
             });
             allBanks.setOnAction(e -> {
                 previousPane.add((Pane) rootPane.getCenter());
                 rootPane.setCenter(createBanksPage());
+                logger.info("Відкрито сторінку банків");
             });
 
             userMenu.getItems().addAll(profile, allDeposits, allBanks);
@@ -257,10 +314,13 @@ public class BankApp extends Application {
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
         topBar.getChildren().addAll(backButton, spacer, menuBar);
+        logger.info("Користувацьке меню сформоване");
         return topBar;
     }
     // Головна сторінка
     private Pane createMainPane(String username) {
+        logger.info("Створюємо головну панель для користувача: " + username);
+
         VBox vbox = new VBox(15);
         vbox.setAlignment(Pos.TOP_LEFT);
         vbox.setPadding(new Insets(25));
@@ -270,7 +330,6 @@ public class BankApp extends Application {
         -fx-effect: dropshadow(gaussian, rgba(108,99,255,0.12), 12, 0, 0, 6);
     """);
 
-        // Заголовок
         Label header = new Label("Ласкаво просимо, " + username + "!");
         header.setStyle("""
         -fx-font-size: 22px;
@@ -284,36 +343,29 @@ public class BankApp extends Application {
 
         Separator separator = new Separator();
 
-        // Швидкі дії (картки)
         HBox actionCards = new HBox(15);
         actionCards.setPadding(new Insets(10, 0, 0, 0));
 
         if(! UserSession.getInstance().getCurrentUser().isAdmin()){
+            logger.info("Додаємо картки для звичайного користувача");
+
             // Картка "Усі депозити"
             VBox depositsCard = new VBox(8);
             depositsCard.setPadding(new Insets(15));
             depositsCard.setAlignment(Pos.CENTER);
             depositsCard.setStyle("""
-        -fx-background-color: #6C63FF;
-        -fx-background-radius: 12;
-        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0, 0, 2);
-    """);
+            -fx-background-color: #6C63FF;
+            -fx-background-radius: 12;
+            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0, 0, 2);
+        """);
             Label depositsLbl = new Label("Усі депозити");
             depositsLbl.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
             depositsCard.getChildren().add(depositsLbl);
-            depositsCard.setOnMouseEntered(e -> depositsCard.setStyle("""
-        -fx-background-color: #7D74FF;
-        -fx-background-radius: 12;
-        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 8, 0, 0, 3);
-    """));
-            depositsCard.setOnMouseExited(e -> depositsCard.setStyle("""
-        -fx-background-color: #6C63FF;
-        -fx-background-radius: 12;
-        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0, 0, 2);
-    """));
+
             depositsCard.setOnMouseClicked(e -> {
                 previousPane.add((Pane) rootPane.getCenter());
                 rootPane.setCenter(createDepositsPane(false));
+                logger.info("Відкрито панель депозитів користувачем");
             });
 
             // Картка "Усі банки"
@@ -321,33 +373,25 @@ public class BankApp extends Application {
             banksCard.setPadding(new Insets(15));
             banksCard.setAlignment(Pos.CENTER);
             banksCard.setStyle("""
-        -fx-background-color: #FF6B6B;
-        -fx-background-radius: 12;
-        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0, 0, 2);
-    """);
+            -fx-background-color: #FF6B6B;
+            -fx-background-radius: 12;
+            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0, 0, 2);
+        """);
             Label banksLbl = new Label("Усі банки");
             banksLbl.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
             banksCard.getChildren().add(banksLbl);
-            banksCard.setOnMouseEntered(e -> banksCard.setStyle("""
-        -fx-background-color: #FF8787;
-        -fx-background-radius: 12;
-        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 8, 0, 0, 3);
-    """));
-            banksCard.setOnMouseExited(e -> banksCard.setStyle("""
-        -fx-background-color: #FF6B6B;
-        -fx-background-radius: 12;
-        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0, 0, 2);
-    """));
+
             banksCard.setOnMouseClicked(e -> {
                 previousPane.add((Pane) rootPane.getCenter());
                 rootPane.setCenter(createBanksPage());
+                logger.info("Відкрито панель банків користувачем");
             });
 
             actionCards.getChildren().addAll(depositsCard, banksCard);
         }
 
-
         vbox.getChildren().addAll(header, separator, description, actionCards);
+        logger.info("Головна панель сформована для користувача: " + username);
         return vbox;
     }
 
@@ -400,6 +444,7 @@ public class BankApp extends Application {
     """);
         btnSearch.setOnAction(e -> {
             String query = searchField.getText().trim().toLowerCase();
+            logger.info("Користувач виконав пошук депозитів: '{}'", query);
 
             // Завантажуємо депозити з кешу
             List<Deposit> allDeposits = DepositsCache.getInstance().getDeposits();
@@ -411,10 +456,12 @@ public class BankApp extends Application {
                     filtered.add(dep);
                 }
             }
+            logger.info("Знайдено {} депозитів за запитом '{}'", filtered.size(), query);
 
             // Оновлюємо UI
             depositsContainer.getChildren().clear();
             if (filtered.isEmpty()) {
+                logger.warn("Депозити не знайдені для запиту '{}'", query);
                 Label emptyLabel = new Label("Депозити не знайдені.");
                 emptyLabel.setStyle("-fx-text-fill: gray; -fx-font-style: italic;");
                 depositsContainer.getChildren().add(emptyLabel);
@@ -477,7 +524,7 @@ public class BankApp extends Application {
         scrollPane.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
         box.getChildren().add(scrollPane);
 
-        // --- Логіка пошуку та сортування залишається без змін ---
+        // --- Логіка пошуку та сортування ---
         btnApplySort.setOnAction(e -> {
             List<Deposit> deposits = DepositsCache.getInstance().getDeposits();
             depositsContainer.getChildren().clear();
@@ -485,14 +532,19 @@ public class BankApp extends Application {
             // Сортування по вибраному параметру
             if (sortName.isSelected()) {
                 deposits.sort((d1, d2) -> d1.getName().compareToIgnoreCase(d2.getName()));
+                logger.info("Сортування депозитів за назвою");
             } else if (sortRate.isSelected()) {
                 deposits.sort((d1, d2) -> Double.compare(d2.getInterestRate(), d1.getInterestRate()));
+                logger.info("Сортування депозитів за відсотком");
             } else if (sortAmount.isSelected()) {
                 deposits.sort((d1, d2) -> Double.compare(d2.getMinAmount(), d1.getMinAmount()));
+                logger.info("Сортування депозитів за мінімальною сумою");
             } else if (sortTerm.isSelected()) {
                 deposits.sort((d1, d2) -> Integer.compare(d2.getTermMonths(), d1.getTermMonths()));
+                logger.info("Сортування депозитів за терміном");
             } else if (sortEarlyWithdraw.isSelected()) {
                 deposits.sort((d1, d2) -> Boolean.compare(d2.isEarlyWithdrawal(), d1.isEarlyWithdrawal()));
+                logger.info("Сортування депозитів за можливістю дострокового зняття");
             }
 
             // Оновлюємо UI
@@ -505,10 +557,12 @@ public class BankApp extends Application {
         new Thread(() -> {
             List<Deposit> deposits = DepositsCache.getInstance().loadDeposits(20);
             if (deposits == null) deposits = new ArrayList<>();
+            logger.info("Завантажено {} депозитів з кешу", deposits.size());
             final List<Deposit> finalDeposits = deposits;
             Platform.runLater(() -> {
                 depositsContainer.getChildren().clear();
                 if (finalDeposits.isEmpty()) {
+                    logger.warn("Немає депозитів для відображення");
                     Label emptyLabel = new Label("Депозити не знайдені.");
                     emptyLabel.setStyle("-fx-text-fill: gray; -fx-font-style: italic;");
                     depositsContainer.getChildren().add(emptyLabel);
@@ -532,11 +586,13 @@ public class BankApp extends Application {
 
         User currentUser = UserSession.getInstance().getCurrentUser();
         if (currentUser == null) {
+            logger.warn("Користувач не авторизований, профіль недоступний");
             Label noUser = new Label("❌ Не авторизовано.");
             noUser.setStyle("-fx-font-size: 16px; -fx-text-fill: #2E2B5F;");
             box.getChildren().add(noUser);
             return box;
         }
+        logger.info("Відкрито профіль користувача: {}", currentUser.getLogin());
 
         // --- Інформаційна картка користувача ---
         VBox userInfo = new VBox(10);
@@ -580,18 +636,23 @@ public class BankApp extends Application {
         // --- Завантаження депозитів асинхронно ---
         new Thread(() -> {
             List<Deposit> userDeposits = OpenDepositsCache.getInstance().loadOpenDeposits();
-
             if (userDeposits == null || userDeposits.isEmpty()) {
+                logger.info("Кеш депозитів порожній, отримуємо депозити з API для користувача {}", currentUser.getLogin());
                 userDeposits = api.getUserDeposits(currentUser.getUserId());
+            } else {
+                logger.info("Завантажено {} депозитів користувача {} з кешу", userDeposits.size(), currentUser.getLogin());
             }
 
             List<Deposit> finalList = userDeposits;
             Platform.runLater(() -> {
+                depositsBox.getChildren().clear();
                 if (finalList == null || finalList.isEmpty()) {
+                    logger.warn("Користувач {} не має відкритих депозитів", currentUser.getLogin());
                     Label noDep = new Label("У вас поки немає відкритих депозитів.");
                     noDep.setStyle("-fx-text-fill: #888; -fx-font-style: italic;");
                     depositsBox.getChildren().add(noDep);
                 } else {
+                    logger.info("Відображаємо {} відкритих депозитів для користувача {}", finalList.size(), currentUser.getLogin());
                     finalList.forEach(dep -> depositsBox.getChildren().add(createUserDepositCard(dep, depositsBox)));
                 }
             });
@@ -650,10 +711,12 @@ public class BankApp extends Application {
         scrollPane.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
 
         List<Bank> allBanks = BankCache.getInstance().loadAllBanks();
+        logger.info("Завантажено {} банків з кешу", allBanks.size());
 
         Runnable updateBanks = () -> {
             String query = searchField.getText().toLowerCase();
             banksList.getChildren().clear();
+            int displayed = 0;
 
             for (Bank bank : allBanks) {
                 if (bank.getName().toLowerCase().contains(query)) {
@@ -703,8 +766,12 @@ public class BankApp extends Application {
                         if (bank.getWebUrl() != null && !bank.getWebUrl().isEmpty()) {
                             try {
                                 java.awt.Desktop.getDesktop().browse(new java.net.URI(bank.getWebUrl()));
-                            } catch (Exception ex) { ex.printStackTrace(); }
+                                logger.info("Відкрито сайт банку: {}", bank.getName());
+                            } catch (Exception ex) {
+                                logger.error("Помилка при відкритті сайту банку {}: {}", bank.getName(), ex.getMessage());
+                            }
                         } else {
+                            logger.warn("Спроба відкрити сайт банку {} — сайт відсутній", bank.getName());
                             Alert alert = new Alert(Alert.AlertType.INFORMATION);
                             alert.setTitle("Сайт недоступний");
                             alert.setHeaderText(null);
@@ -732,17 +799,24 @@ public class BankApp extends Application {
                 """));
 
                     banksList.getChildren().add(card);
+                    displayed++;
                 }
             }
 
-            if (banksList.getChildren().isEmpty()) {
+            if (displayed == 0) {
                 Label noResults = new Label("Нічого не знайдено.");
                 noResults.setStyle("-fx-text-fill: #888; -fx-font-style: italic;");
                 banksList.getChildren().add(noResults);
+                logger.info("Пошук банків за запитом '{}' не дав результатів", query);
+            } else {
+                logger.info("Пошук банків за запитом '{}' відображено {} результатів", query, displayed);
             }
         };
 
-        applyButton.setOnAction(e -> updateBanks.run());
+        applyButton.setOnAction(e -> {
+            logger.info("Натиснуто кнопку 'Застосувати' для пошуку банків із запитом '{}'", searchField.getText());
+            updateBanks.run();
+        });
         updateBanks.run();
 
         container.getChildren().addAll(searchBox, scrollPane);
@@ -802,11 +876,12 @@ public class BankApp extends Application {
         userCardsContainer.setAlignment(Pos.CENTER_LEFT);
         userCardsContainer.setPadding(new Insets(10));
 
-        // Логіка кнопок залишилась без змін
+        // Логіка кнопок із логерами
         addBtn.setOnAction(e -> {
             try {
                 boolean s = api.addUser(loginField.getText(), passField.getText(), adminCheck.isSelected());
                 if (s) {
+                    logger.info("Додано нового користувача: {} (адмін: {})", loginField.getText(), adminCheck.isSelected());
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("✅ Успіх");
                     alert.setHeaderText(null);
@@ -814,6 +889,7 @@ public class BankApp extends Application {
                     alert.showAndWait();
                 }
             } catch (NumberFormatException ex) {
+                logger.error("Помилка при додаванні користувача: {}", ex.getMessage());
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Помилка");
                 alert.setHeaderText(null);
@@ -823,6 +899,7 @@ public class BankApp extends Application {
         });
 
         findBtn.setOnAction(e -> {
+            logger.info("Натиснуто кнопку 'Знайти користувача' із запитом: login='{}', admin={}", loginField.getText(), adminCheck.isSelected());
             userCardsContainer.getChildren().clear();
             List<User> foundUsers = api.findUser(
                     loginField.getText().isEmpty() ? null : loginField.getText(),
@@ -831,10 +908,12 @@ public class BankApp extends Application {
             );
 
             if (foundUsers == null || foundUsers.isEmpty()) {
+                logger.info("Користувачів не знайдено за запитом login='{}', admin={}", loginField.getText(), adminCheck.isSelected());
                 Label noUsers = new Label("❌ Користувачів не знайдено");
                 noUsers.setStyle("-fx-text-fill: #888; -fx-font-style: italic;");
                 userCardsContainer.getChildren().add(noUsers);
             } else {
+                logger.info("Знайдено {} користувачів за запитом", foundUsers.size());
                 for (User user : foundUsers) {
                     userCardsContainer.getChildren().add(
                             createUserCard(user.getUserId(), user.getLogin(), user.getPassword(), user.isAdmin())
@@ -858,6 +937,8 @@ public class BankApp extends Application {
         return wrapper;
     }
     private HBox createUserCard(int id, String login, String password, boolean isAdmin) {
+        logger.info("Створення картки користувача: ID={}, login={}, isAdmin={}", id, login, isAdmin);
+
         HBox card = new HBox(15);
         card.setAlignment(Pos.CENTER_LEFT);
         card.setPadding(new Insets(12));
@@ -906,9 +987,11 @@ public class BankApp extends Application {
     """));
 
         deleteBtn.setOnAction(e -> {
+            logger.info("Спроба видалення користувача ID={}", id);
             try {
                 boolean s = api.deleteUser(id);
                 if (s) {
+                    logger.info("Користувач ID={} успішно видалений", id);
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("✅ Успіх");
                     alert.setHeaderText(null);
@@ -916,6 +999,7 @@ public class BankApp extends Application {
                     alert.showAndWait();
                 }
             } catch (NumberFormatException ex) {
+                logger.error("Помилка при видаленні користувача ID={}: {}", id, ex.getMessage());
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Помилка");
                 alert.setHeaderText(null);
@@ -1018,10 +1102,11 @@ public class BankApp extends Application {
         bankCards.setAlignment(Pos.CENTER_LEFT);
         bankCards.setPadding(new Insets(10));
 
-        // 🔹 Додавання банку
+        // 🔹 Додавання банку з логером
         addBtn.setOnAction(e -> {
             boolean success = api.addBank(nameField.getText(), addrField.getText(), urlField.getText(), phoneField.getText());
             if (success) {
+                logger.info("Додано новий банк: {} ({}, {}, {})", nameField.getText(), addrField.getText(), urlField.getText(), phoneField.getText());
                 // Додати картку банку до UI
                 bankCards.getChildren().add(createBankCard(0, nameField.getText(), addrField.getText(), urlField.getText(), phoneField.getText()));
                 // Очистити поля
@@ -1029,10 +1114,15 @@ public class BankApp extends Application {
                 addrField.clear();
                 urlField.clear();
                 phoneField.clear();
+            } else {
+                logger.warn("Не вдалося додати банк: {} ({}, {}, {})", nameField.getText(), addrField.getText(), urlField.getText(), phoneField.getText());
             }
         });
 
+        // 🔹 Пошук банку з логером
         findBtn.setOnAction(e -> {
+            logger.info("Натиснуто кнопку 'Знайти банк' із запитом: name='{}', address='{}', url='{}', phone='{}'",
+                    nameField.getText(), addrField.getText(), urlField.getText(), phoneField.getText());
             bankCards.getChildren().clear(); // Очищаємо контейнер перед новими результатами
 
             List<Bank> foundBanks = api.findBanks(
@@ -1043,10 +1133,12 @@ public class BankApp extends Application {
             );
 
             if (foundBanks == null || foundBanks.isEmpty()) {
+                logger.info("Банків не знайдено за запитом");
                 Label noBanks = new Label("❌ Банків не знайдено");
                 noBanks.setStyle("-fx-text-fill: #888; -fx-font-style: italic;");
                 bankCards.getChildren().add(noBanks);
             } else {
+                logger.info("Знайдено {} банків за запитом", foundBanks.size());
                 for (Bank bank : foundBanks) {
                     bankCards.getChildren().add(createBankCard(
                             bank.getBankId(),
@@ -1076,6 +1168,8 @@ public class BankApp extends Application {
         return wrapper;
     }
     private HBox createBankCard(int id, String name, String address, String webUrl, String phone) {
+        logger.info("Створення картки банку: ID={}, name={}", id, name);
+
         HBox card = new HBox(15);
         card.setAlignment(Pos.CENTER_LEFT);
         card.setPadding(new Insets(12));
@@ -1103,8 +1197,12 @@ public class BankApp extends Application {
     """);
 
         deleteBtn.setOnAction(e -> {
+            logger.info("Спроба видалення банку ID={}", id);
             if (api.deleteBank(id)) {
                 ((VBox) card.getParent()).getChildren().remove(card);
+                logger.info("Банк ID={} успішно видалений", id);
+            } else {
+                logger.warn("Не вдалося видалити банк ID={}", id);
             }
         });
 
@@ -1200,13 +1298,21 @@ public class BankApp extends Application {
                 boolean success = api.addDeposit(name, bankId, rate, term, minAmount, topup, early, currency);
 
                 if (success) {
+                    logger.info("Додано депозит: {} (bankId={}, rate={}, term={}, minAmount={}, topup={}, early={}, currency={})",
+                            name, bankId, rate, term, minAmount, topup, early, currency);
+
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("✅ Успіх");
                     alert.setHeaderText(null);
                     alert.setContentText("Депозит успішно додано!");
                     alert.showAndWait();
+                } else {
+                    logger.warn("Не вдалося додати депозит: {} (bankId={}, rate={}, term={}, minAmount={}, topup={}, early={}, currency={})",
+                            name, bankId, rate, term, minAmount, topup, early, currency);
                 }
             } catch (NumberFormatException ex) {
+                logger.error("Помилка введення числових полів при додаванні депозиту", ex);
+
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Помилка");
                 alert.setHeaderText(null);
@@ -1217,15 +1323,21 @@ public class BankApp extends Application {
 
         findBtn.setOnAction(e -> {
             depositCards.getChildren().clear();
+            logger.info("Пошук депозитів за параметрами: name='{}', bankId='{}', rate='{}', currency='{}'",
+                    nameField.getText(), bankIdField.getText(), rateField.getText(), currencyField.getText());
+
             List<Deposit> deposits = api.findDeposits(
                     nameField.getText().isEmpty() ? null : nameField.getText(),
                     bankIdField.getText().isEmpty() ? null : Integer.parseInt(bankIdField.getText()),
                     rateField.getText().isEmpty() ? null : Double.parseDouble(rateField.getText()),
                     currencyField.getText().isEmpty() ? null : currencyField.getText()
             );
+
             if (deposits == null || deposits.isEmpty()) {
+                logger.info("Депозити не знайдено за запитом");
                 depositCards.getChildren().add(new Label("❌ Депозити не знайдено"));
             } else {
+                logger.info("Знайдено {} депозитів", deposits.size());
                 for (Deposit dep : deposits) {
                     depositCards.getChildren().add(createDepositCardShort(dep));
                 }
@@ -1249,6 +1361,8 @@ public class BankApp extends Application {
         return wrapper;
     }
     private HBox createDepositCardShort(Deposit dep) {
+        logger.info("Створення картки депозиту: ID={}, Name={}", dep.getDepositId(), dep.getName());
+
         HBox card = new HBox(15);
         card.setAlignment(Pos.CENTER_LEFT);
         card.setPadding(new Insets(12));
@@ -1275,14 +1389,19 @@ public class BankApp extends Application {
         deleteBtn.setStyle("-fx-background-color: #F44336; -fx-text-fill: white; -fx-background-radius: 6;");
         deleteBtn.setOnMouseEntered(e -> deleteBtn.setStyle("-fx-background-color: #E53935; -fx-text-fill: white; -fx-background-radius: 6;"));
         deleteBtn.setOnMouseExited(e -> deleteBtn.setStyle("-fx-background-color: #F44336; -fx-text-fill: white; -fx-background-radius: 6;"));
+
         deleteBtn.setOnAction(e -> {
+            logger.info("Спроба видалення депозиту ID={}", dep.getDepositId());
             boolean s = api.deleteDeposit(dep.getDepositId());
             if(s){
+                logger.info("Депозит ID={} успішно видалено", dep.getDepositId());
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("✅ Успіх");
                 alert.setHeaderText(null);
                 alert.setContentText("Депозит успішно видалено!");
                 alert.showAndWait();
+            } else {
+                logger.warn("Не вдалося видалити депозит ID={}", dep.getDepositId());
             }
         });
 
@@ -1309,6 +1428,8 @@ public class BankApp extends Application {
 
 
     private Pane createDepositCard(Deposit dep, Pane parentPane) {
+        logger.info("Створення картки депозиту DepositID={} Name={}", dep.getDepositId(), dep.getName());
+
         VBox card = new VBox(10);
         card.setPadding(new Insets(12));
         card.setMaxWidth(320);
@@ -1320,30 +1441,25 @@ public class BankApp extends Application {
         -fx-effect: dropshadow(gaussian, rgba(108,99,255,0.15), 8, 0, 0, 4);
     """);
 
-        // Назва депозиту
         Label name = new Label(dep.getName());
         name.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
         name.setTextFill(Color.web("#2E2B5F"));
 
-        // Банк
         Label bank = new Label("🏦 " + dep.getBankName());
         bank.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 12));
         bank.setTextFill(Color.web("#5555AA"));
 
-        // Деталі депозиту
         Label details = new Label(String.format("💰 %.2f%% • %d міс.", dep.getInterestRate(), dep.getTermMonths()));
         details.setFont(Font.font(12));
 
         Label amount = new Label(String.format("💵 Мін: %.2f %s", dep.getMinAmount(), dep.getCurrency()));
         amount.setFont(Font.font(12));
 
-        // Кнопка відкриття депозиту
         Button openBtn = new Button("Відкрити депозит");
         openBtn.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 8;");
         openBtn.setOnMouseEntered(e -> openBtn.setStyle("-fx-background-color: #5DD165; -fx-text-fill: white; -fx-background-radius: 8;"));
         openBtn.setOnMouseExited(e -> openBtn.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 8;"));
 
-        // Перевірка, чи користувач уже має цей депозит
         new Thread(() -> {
             boolean alreadyOpen = api.isDepositAlreadyOpenedForUser(
                     dep.getDepositId(),
@@ -1352,22 +1468,30 @@ public class BankApp extends Application {
 
             Platform.runLater(() -> {
                 if (alreadyOpen) {
+                    logger.info("Депозит DepositID={} вже відкрито для користувача UserID={}", dep.getDepositId(),
+                            UserSession.getInstance().getCurrentUser().getUserId());
                     openBtn.setText("Вже відкрито");
                     openBtn.setDisable(true);
                     openBtn.setStyle("-fx-background-color: #BDBDBD; -fx-text-fill: white; -fx-background-radius: 8;");
                 } else {
                     openBtn.setOnAction(e -> {
+                        logger.info("Спроба відкриття депозиту DepositID={} для користувача UserID={}",
+                                dep.getDepositId(), UserSession.getInstance().getCurrentUser().getUserId());
                         boolean success = api.openUserDeposit(
                                 UserSession.getInstance().getCurrentUser().getUserId(),
                                 dep.getDepositId(),
                                 dep.getMinAmount()
                         );
                         if (success) {
+                            logger.info("Депозит DepositID={} успішно відкрито для користувача UserID={}",
+                                    dep.getDepositId(), UserSession.getInstance().getCurrentUser().getUserId());
                             showAlert("Успіх", "Депозит успішно відкрито!");
                             openBtn.setText("Вже відкрито");
                             openBtn.setDisable(true);
                             openBtn.setStyle("-fx-background-color: #BDBDBD; -fx-text-fill: white; -fx-background-radius: 8;");
                         } else {
+                            logger.warn("Не вдалося відкрити депозит DepositID={} для користувача UserID={}",
+                                    dep.getDepositId(), UserSession.getInstance().getCurrentUser().getUserId());
                             showAlert("Помилка", "Не вдалося відкрити депозит!");
                         }
                     });
@@ -1399,21 +1523,23 @@ public class BankApp extends Application {
         Label minAmount = new Label(String.format("Мін. сума: %.2f %s", dep.getMinAmount(), dep.getCurrency()));
         Label currentAmount = new Label("На депозиті: ...");
 
-        // Підвантаження актуальної суми асинхронно
+        // Асинхронне оновлення актуальної суми
         new Thread(() -> {
-            double actualAmount = dep.getMoneyOnDeposit(); // можна брати з обʼєкта
+            double actualAmount = dep.getMoneyOnDeposit();
             if (dep.getOpenDepositId() != 0) {
                 actualAmount = dep.api.getDepositBalance(dep.getOpenDepositId());
             }
             double finalActualAmount = actualAmount;
-            Platform.runLater(() -> currentAmount.setText(String.format("На депозиті: %.2f %s", finalActualAmount, dep.getCurrency())));
+            Platform.runLater(() -> currentAmount.setText(
+                    String.format("На депозиті: %.2f %s", finalActualAmount, dep.getCurrency())
+            ));
         }).start();
 
-        // Дати
+        // Дати відкриття/закриття депозиту
         Label startDate = new Label("Відкрито: " + (dep.getStartDate() != null ? dep.getStartDate() : "—"));
         Label endDate = new Label("Закрито: " + (dep.getEndDate() != null ? dep.getEndDate() : "—"));
 
-        // Статус
+        // Статус депозиту
         Label status = new Label(dep.getEndDate() == null ? "Статус: 🔵 Активний" : "Статус: ⚫ Закрито");
         status.setStyle(dep.getEndDate() == null
                 ? "-fx-text-fill: #4CAF50; -fx-font-weight: bold;"
@@ -1445,20 +1571,18 @@ public class BankApp extends Application {
             -fx-cursor: hand;
         """);
 
-            // Обробник кнопки "Закрити депозит"
-            closeBtn.setOnAction(e -> {
-                new Thread(() -> {
-                    dep.closeDeposit(); // виклик API через Deposit
-                    Platform.runLater(() -> {
-                        status.setText("Статус: ⚫ Закрито");
-                        status.setStyle("-fx-text-fill: #9E9E9E; -fx-font-weight: bold;");
-                        endDate.setText("Закрито: " + java.time.LocalDate.now().toString());
-                        actions.setVisible(false); // ховаємо кнопки
-                    });
-                }).start();
-            });
+            // Закриття депозиту
+            closeBtn.setOnAction(e -> new Thread(() -> {
+                dep.closeDeposit();
+                Platform.runLater(() -> {
+                    status.setText("Статус: ⚫ Закрито");
+                    status.setStyle("-fx-text-fill: #9E9E9E; -fx-font-weight: bold;");
+                    endDate.setText("Закрито: " + java.time.LocalDate.now());
+                    actions.setVisible(false);
+                });
+            }).start());
 
-            // Обробник кнопки "Поповнити"
+            // Поповнення депозиту
             topUpBtn.setOnAction(e -> {
                 TextInputDialog dialog = new TextInputDialog();
                 dialog.setTitle("Поповнення депозиту");
@@ -1470,7 +1594,9 @@ public class BankApp extends Application {
                         new Thread(() -> {
                             dep.topUp(amount);
                             double newBalance = dep.api.getDepositBalance(dep.getOpenDepositId());
-                            Platform.runLater(() -> currentAmount.setText(String.format("На депозиті: %.2f %s", newBalance, dep.getCurrency())));
+                            Platform.runLater(() -> currentAmount.setText(
+                                    String.format("На депозиті: %.2f %s", newBalance, dep.getCurrency())
+                            ));
                         }).start();
                     } catch (NumberFormatException ex) {
                         Platform.runLater(() -> {
@@ -1493,6 +1619,8 @@ public class BankApp extends Application {
 
 
     private void showAlert(String title, String message) {
+        logger.info("Показ алерту: {} - {}", title, message);
+
         javafx.application.Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION); // можна WARNING або INFORMATION
             alert.setTitle(title);

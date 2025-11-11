@@ -1,0 +1,436 @@
+2025-11-11 01:34:49 | INFO  | BankApp | Програма запущена
+2025-11-11 01:34:49 | INFO  | BankApp | Primary stage встановлено
+2025-11-11 01:34:49 | INFO  | BankApp | Primary stage налаштований: resizable=false, title=DepDepDeposit
+2025-11-11 01:34:49 | INFO  | BankApp | Створено rootPane
+2025-11-11 01:34:49 | INFO  | BankApp | Застосовано стиль до rootPane
+2025-11-11 01:34:49 | INFO  | BankApp | Створюємо панель реєстрації
+2025-11-11 01:34:49 | INFO  | BankApp | GridPane створено та стилізовано
+2025-11-11 01:34:49 | INFO  | BankApp | Додано заголовок панелі реєстрації
+2025-11-11 01:34:49 | INFO  | BankApp | Панель реєстрації готова
+2025-11-11 01:34:49 | INFO  | BankApp | Створено registerRoot через createRegisterPane()
+2025-11-11 01:34:49 | INFO  | BankApp | registerRoot додано до center rootPane
+2025-11-11 01:34:49 | INFO  | BankApp | Налаштовано padding і border rootPane
+2025-11-11 01:34:49 | INFO  | BankApp | FadeTransition для rootPane запущено
+2025-11-11 01:34:50 | INFO  | BankApp | Сцена встановлена і primaryStage показано
+2025-11-11 01:34:58 | INFO  | BankApp | Спроба входу користувача: user1
+2025-11-11 01:34:59 | INFO  | BankApp | Користувач успішно увійшов: user1
+2025-11-11 01:34:59 | INFO  | BankApp | Створюємо користувацьке меню (isAdmin=false)
+2025-11-11 01:34:59 | INFO  | BankApp | Додаємо звичайне користувацьке меню
+2025-11-11 01:34:59 | INFO  | BankApp | Користувацьке меню сформоване
+2025-11-11 01:34:59 | INFO  | BankApp | Створюємо головну панель для користувача: user1
+2025-11-11 01:34:59 | INFO  | BankApp | Додаємо картки для звичайного користувача
+2025-11-11 01:34:59 | INFO  | BankApp | Головна панель сформована для користувача: user1
+2025-11-11 01:37:37 | INFO  | BankApp | Програма запущена
+2025-11-11 01:37:37 | INFO  | BankApp | Primary stage встановлено
+2025-11-11 01:37:37 | INFO  | BankApp | Primary stage налаштований: resizable=false, title=DepDepDeposit
+2025-11-11 01:37:37 | INFO  | BankApp | Створено rootPane
+2025-11-11 01:37:37 | INFO  | BankApp | Застосовано стиль до rootPane
+2025-11-11 01:37:37 | INFO  | BankApp | Створюємо панель реєстрації
+2025-11-11 01:37:37 | INFO  | BankApp | GridPane створено та стилізовано
+2025-11-11 01:37:37 | INFO  | BankApp | Додано заголовок панелі реєстрації
+2025-11-11 01:37:37 | INFO  | BankApp | Панель реєстрації готова
+2025-11-11 01:37:37 | INFO  | BankApp | Створено registerRoot через createRegisterPane()
+2025-11-11 01:37:37 | INFO  | BankApp | registerRoot додано до center rootPane
+2025-11-11 01:37:37 | INFO  | BankApp | Налаштовано padding і border rootPane
+2025-11-11 01:37:37 | INFO  | BankApp | FadeTransition для rootPane запущено
+2025-11-11 01:37:37 | INFO  | BankApp | Сцена встановлена і primaryStage показано
+2025-11-11 01:37:44 | INFO  | BankApp | Спроба входу користувача: user1
+2025-11-11 01:37:45 | INFO  | BankApp | Користувач успішно увійшов: user1
+2025-11-11 01:37:45 | INFO  | BankApp | Створюємо користувацьке меню (isAdmin=false)
+2025-11-11 01:37:45 | INFO  | BankApp | Додаємо звичайне користувацьке меню
+2025-11-11 01:37:45 | INFO  | BankApp | Користувацьке меню сформоване
+2025-11-11 01:37:45 | INFO  | BankApp | Створюємо головну панель для користувача: user1
+2025-11-11 01:37:45 | INFO  | BankApp | Додаємо картки для звичайного користувача
+2025-11-11 01:37:45 | INFO  | BankApp | Головна панель сформована для користувача: user1
+2025-11-11 01:37:46 | INFO  | BankApp | Відкрито сторінку профілю користувача
+2025-11-11 02:02:41 | INFO  | BankApp | Програма запущена
+2025-11-11 02:02:41 | INFO  | BankApp | Primary stage встановлено
+2025-11-11 02:02:41 | INFO  | BankApp | Primary stage налаштований: resizable=false, title=DepDepDeposit
+2025-11-11 02:02:41 | INFO  | BankApp | Створено rootPane
+2025-11-11 02:02:41 | INFO  | BankApp | Застосовано стиль до rootPane
+2025-11-11 02:02:41 | INFO  | BankApp | Створюємо панель реєстрації
+2025-11-11 02:02:41 | INFO  | BankApp | GridPane створено та стилізовано
+2025-11-11 02:02:41 | INFO  | BankApp | Додано заголовок панелі реєстрації
+2025-11-11 02:02:41 | INFO  | BankApp | Панель реєстрації готова
+2025-11-11 02:02:41 | INFO  | BankApp | Створено registerRoot через createRegisterPane()
+2025-11-11 02:02:41 | INFO  | BankApp | registerRoot додано до center rootPane
+2025-11-11 02:02:41 | INFO  | BankApp | Налаштовано padding і border rootPane
+2025-11-11 02:02:41 | INFO  | BankApp | FadeTransition для rootPane запущено
+2025-11-11 02:02:41 | INFO  | BankApp | Сцена встановлена і primaryStage показано
+2025-11-11 02:03:39 | INFO  | BankApp | Спроба входу користувача: user1
+2025-11-11 02:03:40 | INFO  | BankApp | Користувач успішно увійшов: user1
+2025-11-11 02:03:40 | INFO  | BankApp | Створюємо користувацьке меню (isAdmin=false)
+2025-11-11 02:03:40 | INFO  | BankApp | Додаємо звичайне користувацьке меню
+2025-11-11 02:03:40 | INFO  | BankApp | Користувацьке меню сформоване
+2025-11-11 02:03:40 | INFO  | BankApp | Створюємо головну панель для користувача: user1
+2025-11-11 02:03:40 | INFO  | BankApp | Додаємо картки для звичайного користувача
+2025-11-11 02:03:40 | INFO  | BankApp | Головна панель сформована для користувача: user1
+2025-11-11 02:04:34 | INFO  | BankApp | Програма запущена
+2025-11-11 02:04:34 | INFO  | BankApp | Primary stage встановлено
+2025-11-11 02:04:34 | INFO  | BankApp | Primary stage налаштований: resizable=false, title=DepDepDeposit
+2025-11-11 02:04:34 | INFO  | BankApp | Створено rootPane
+2025-11-11 02:04:34 | INFO  | BankApp | Застосовано стиль до rootPane
+2025-11-11 02:04:34 | INFO  | BankApp | Створюємо панель реєстрації
+2025-11-11 02:04:34 | INFO  | BankApp | GridPane створено та стилізовано
+2025-11-11 02:04:34 | INFO  | BankApp | Додано заголовок панелі реєстрації
+2025-11-11 02:04:34 | INFO  | BankApp | Панель реєстрації готова
+2025-11-11 02:04:34 | INFO  | BankApp | Створено registerRoot через createRegisterPane()
+2025-11-11 02:04:34 | INFO  | BankApp | registerRoot додано до center rootPane
+2025-11-11 02:04:34 | INFO  | BankApp | Налаштовано padding і border rootPane
+2025-11-11 02:04:34 | INFO  | BankApp | FadeTransition для rootPane запущено
+2025-11-11 02:04:35 | INFO  | BankApp | Сцена встановлена і primaryStage показано
+2025-11-11 02:04:45 | INFO  | BankApp | Спроба входу користувача: admin1
+2025-11-11 02:04:46 | INFO  | BankApp | Користувач успішно увійшов: admin1
+2025-11-11 02:04:46 | INFO  | BankApp | Створюємо користувацьке меню (isAdmin=true)
+2025-11-11 02:04:46 | INFO  | BankApp | Додаємо адміністративне меню
+2025-11-11 02:04:46 | INFO  | BankApp | Користувацьке меню сформоване
+2025-11-11 02:04:46 | INFO  | BankApp | Створюємо головну панель для користувача: admin1
+2025-11-11 02:04:46 | INFO  | BankApp | Головна панель сформована для користувача: admin1
+2025-11-11 02:05:19 | INFO  | BankApp | Відкрито сторінку редагування банків
+2025-11-11 02:05:51 | INFO  | BankApp | Натиснуто кнопку 'Знайти банк' із запитом: name='', address='', url='', phone=''
+2025-11-11 02:05:52 | INFO  | BankApp | Знайдено 20 банків за запитом
+2025-11-11 02:05:52 | INFO  | BankApp | Створення картки банку: ID=1, name=PrivatBank
+2025-11-11 02:05:52 | INFO  | BankApp | Створення картки банку: ID=2, name=Monobank
+2025-11-11 02:05:52 | INFO  | BankApp | Створення картки банку: ID=3, name=Oschadbank
+2025-11-11 02:05:52 | INFO  | BankApp | Створення картки банку: ID=4, name=Raiffeisen Bank Aval
+2025-11-11 02:05:52 | INFO  | BankApp | Створення картки банку: ID=5, name=Ukrsibbank
+2025-11-11 02:05:52 | INFO  | BankApp | Створення картки банку: ID=6, name=Alfa-Bank
+2025-11-11 02:05:52 | INFO  | BankApp | Створення картки банку: ID=7, name=Credit Agricole
+2025-11-11 02:05:52 | INFO  | BankApp | Створення картки банку: ID=8, name=Ukreximbank
+2025-11-11 02:05:52 | INFO  | BankApp | Створення картки банку: ID=9, name=ProCredit Bank
+2025-11-11 02:05:52 | INFO  | BankApp | Створення картки банку: ID=10, name=KredoBank
+2025-11-11 02:05:52 | INFO  | BankApp | Створення картки банку: ID=11, name=PUMB
+2025-11-11 02:05:52 | INFO  | BankApp | Створення картки банку: ID=12, name=OTP Bank
+2025-11-11 02:05:52 | INFO  | BankApp | Створення картки банку: ID=13, name=Idea Bank
+2025-11-11 02:05:52 | INFO  | BankApp | Створення картки банку: ID=14, name=Bank Vostok
+2025-11-11 02:05:52 | INFO  | BankApp | Створення картки банку: ID=16, name=Tascombank
+2025-11-11 02:05:52 | INFO  | BankApp | Створення картки банку: ID=17, name=Creditwest Bank
+2025-11-11 02:05:52 | INFO  | BankApp | Створення картки банку: ID=18, name=Ibox Bank
+2025-11-11 02:05:52 | INFO  | BankApp | Створення картки банку: ID=19, name=Oberbank Ukraine
+2025-11-11 02:05:52 | INFO  | BankApp | Створення картки банку: ID=20, name=Sberbank Ukraine
+2025-11-11 02:05:52 | INFO  | BankApp | Створення картки банку: ID=22, name=ZxcGhoul Bank
+2025-11-11 02:07:08 | INFO  | BankApp | Спроба видалення банку ID=8
+2025-11-11 02:07:08 | INFO  | BankApp | Банк ID=8 успішно видалений
+2025-11-11 02:08:17 | INFO  | BankApp | Додано новий банк: Тест банк (вул. Пулюя 33, https://www.deepseek.com/, +380990676234)
+2025-11-11 02:08:17 | INFO  | BankApp | Створення картки банку: ID=0, name=Тест банк
+2025-11-11 02:08:46 | INFO  | BankApp | Відкрито сторінку редагування депозитів
+2025-11-11 02:08:55 | INFO  | BankApp | Пошук депозитів за параметрами: name='', bankId='', rate='', currency=''
+2025-11-11 02:08:55 | INFO  | BankApp | Знайдено 37 депозитів
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=1, Name=Privat Deposit 1
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=2, Name=Privat Deposit 2
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=3, Name=Monobank Deposit 1
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=4, Name=Monobank Deposit 2
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=5, Name=Oschad Deposit 1
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=6, Name=Oschad Deposit 2
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=7, Name=Raiffeisen Deposit 1
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=8, Name=Raiffeisen Deposit 2
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=9, Name=Ukrsib Deposit 1
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=10, Name=Ukrsib Deposit 2
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=11, Name=Alfa Deposit 1
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=12, Name=Alfa Deposit 2
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=13, Name=CreditAgricole Deposit 1
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=14, Name=CreditAgricole Deposit 2
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=17, Name=ProCredit Deposit 1
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=18, Name=ProCredit Deposit 2
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=19, Name=Kredo Deposit 1
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=20, Name=Kredo Deposit 2
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=21, Name=PUMB Deposit 1
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=22, Name=PUMB Deposit 2
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=23, Name=OTP Deposit 1
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=24, Name=OTP Deposit 2
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=25, Name=Idea Deposit 1
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=26, Name=Idea Deposit 2
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=27, Name=Bank Vostok Deposit 1
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=28, Name=Bank Vostok Deposit 2
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=31, Name=Tascombank Deposit 1
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=32, Name=Tascombank Deposit 2
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=33, Name=Creditwest Deposit 1
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=34, Name=Creditwest Deposit 2
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=35, Name=Ibox Deposit 1
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=36, Name=Ibox Deposit 2
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=37, Name=Oberbank Deposit 1
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=38, Name=Oberbank Deposit 2
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=39, Name=Sberbank Deposit 1
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=40, Name=Sberbank Deposit 2
+2025-11-11 02:08:55 | INFO  | BankApp | Створення картки депозиту: ID=41, Name=Депозит для депчику
+2025-11-11 02:09:47 | INFO  | BankApp | Додано депозит: Не намахалово (bankId=1, rate=12.0, term=1, minAmount=1.0E7, topup=true, early=true, currency=UAN)
+2025-11-11 02:10:05 | INFO  | BankApp | Відкрито сторінку редагування користувачів
+2025-11-11 02:10:08 | INFO  | BankApp | Натиснуто кнопку 'Знайти користувача' із запитом: login='', admin=false
+2025-11-11 02:10:08 | INFO  | BankApp | Знайдено 7 користувачів за запитом
+2025-11-11 02:10:08 | INFO  | BankApp | Створення картки користувача: ID=1, login=user1, isAdmin=false
+2025-11-11 02:10:08 | INFO  | BankApp | Створення картки користувача: ID=2, login=user2, isAdmin=false
+2025-11-11 02:10:08 | INFO  | BankApp | Створення картки користувача: ID=3, login=user3, isAdmin=false
+2025-11-11 02:10:08 | INFO  | BankApp | Створення картки користувача: ID=4, login=user4, isAdmin=false
+2025-11-11 02:10:08 | INFO  | BankApp | Створення картки користувача: ID=5, login=user5, isAdmin=false
+2025-11-11 02:10:08 | INFO  | BankApp | Створення картки користувача: ID=8, login=user6, isAdmin=false
+2025-11-11 02:10:08 | INFO  | BankApp | Створення картки користувача: ID=9, login=user7, isAdmin=false
+2025-11-11 02:10:44 | INFO  | BankApp | Спроба видалення користувача ID=8
+2025-11-11 02:10:44 | INFO  | BankApp | Користувач ID=8 успішно видалений
+2025-11-11 02:11:25 | INFO  | BankApp | Натиснута кнопка Назад, повернення до попередньої панелі
+2025-11-11 02:11:26 | INFO  | BankApp | Натиснута кнопка Назад, повернення до попередньої панелі
+2025-11-11 02:11:27 | INFO  | BankApp | Натиснута кнопка Назад, повернення до попередньої панелі
+2025-11-11 02:13:56 | INFO  | BankApp | Програма запущена
+2025-11-11 02:13:56 | INFO  | BankApp | Primary stage встановлено
+2025-11-11 02:13:56 | INFO  | BankApp | Primary stage налаштований: resizable=false, title=DepDepDeposit
+2025-11-11 02:13:56 | INFO  | BankApp | Створено rootPane
+2025-11-11 02:13:56 | INFO  | BankApp | Застосовано стиль до rootPane
+2025-11-11 02:13:56 | INFO  | BankApp | Створюємо панель реєстрації
+2025-11-11 02:13:56 | INFO  | BankApp | GridPane створено та стилізовано
+2025-11-11 02:13:56 | INFO  | BankApp | Додано заголовок панелі реєстрації
+2025-11-11 02:13:56 | INFO  | BankApp | Панель реєстрації готова
+2025-11-11 02:13:56 | INFO  | BankApp | Створено registerRoot через createRegisterPane()
+2025-11-11 02:13:56 | INFO  | BankApp | registerRoot додано до center rootPane
+2025-11-11 02:13:56 | INFO  | BankApp | Налаштовано padding і border rootPane
+2025-11-11 02:13:56 | INFO  | BankApp | FadeTransition для rootPane запущено
+2025-11-11 02:13:57 | INFO  | BankApp | Сцена встановлена і primaryStage показано
+2025-11-11 02:14:04 | INFO  | BankApp | Спроба входу користувача: user1
+2025-11-11 02:14:04 | INFO  | BankApp | Користувач успішно увійшов: user1
+2025-11-11 02:14:04 | INFO  | BankApp | Створюємо користувацьке меню (isAdmin=false)
+2025-11-11 02:14:04 | INFO  | BankApp | Додаємо звичайне користувацьке меню
+2025-11-11 02:14:04 | INFO  | BankApp | Користувацьке меню сформоване
+2025-11-11 02:14:04 | INFO  | BankApp | Створюємо головну панель для користувача: user1
+2025-11-11 02:14:04 | INFO  | BankApp | Додаємо картки для звичайного користувача
+2025-11-11 02:14:04 | INFO  | BankApp | Головна панель сформована для користувача: user1
+2025-11-11 02:14:06 | INFO  | BankApp | Відкрито панель депозитів користувачем
+2025-11-11 02:14:07 | INFO  | BankApp | Завантажено 20 депозитів з кешу
+2025-11-11 02:14:07 | INFO  | BankApp | Створення картки депозиту DepositID=1 Name=Privat Deposit 1
+2025-11-11 02:14:07 | INFO  | BankApp | Створення картки депозиту DepositID=2 Name=Privat Deposit 2
+2025-11-11 02:14:07 | INFO  | BankApp | Створення картки депозиту DepositID=3 Name=Monobank Deposit 1
+2025-11-11 02:14:07 | INFO  | BankApp | Створення картки депозиту DepositID=4 Name=Monobank Deposit 2
+2025-11-11 02:14:07 | INFO  | BankApp | Створення картки депозиту DepositID=5 Name=Oschad Deposit 1
+2025-11-11 02:14:07 | INFO  | BankApp | Створення картки депозиту DepositID=6 Name=Oschad Deposit 2
+2025-11-11 02:14:07 | INFO  | BankApp | Створення картки депозиту DepositID=7 Name=Raiffeisen Deposit 1
+2025-11-11 02:14:07 | INFO  | BankApp | Створення картки депозиту DepositID=8 Name=Raiffeisen Deposit 2
+2025-11-11 02:14:07 | INFO  | BankApp | Створення картки депозиту DepositID=9 Name=Ukrsib Deposit 1
+2025-11-11 02:14:07 | INFO  | BankApp | Створення картки депозиту DepositID=10 Name=Ukrsib Deposit 2
+2025-11-11 02:14:07 | INFO  | BankApp | Створення картки депозиту DepositID=11 Name=Alfa Deposit 1
+2025-11-11 02:14:07 | INFO  | BankApp | Створення картки депозиту DepositID=12 Name=Alfa Deposit 2
+2025-11-11 02:14:07 | INFO  | BankApp | Створення картки депозиту DepositID=13 Name=CreditAgricole Deposit 1
+2025-11-11 02:14:07 | INFO  | BankApp | Створення картки депозиту DepositID=14 Name=CreditAgricole Deposit 2
+2025-11-11 02:14:07 | INFO  | BankApp | Створення картки депозиту DepositID=17 Name=ProCredit Deposit 1
+2025-11-11 02:14:07 | INFO  | BankApp | Створення картки депозиту DepositID=18 Name=ProCredit Deposit 2
+2025-11-11 02:14:07 | INFO  | BankApp | Створення картки депозиту DepositID=19 Name=Kredo Deposit 1
+2025-11-11 02:14:07 | INFO  | BankApp | Створення картки депозиту DepositID=20 Name=Kredo Deposit 2
+2025-11-11 02:14:07 | INFO  | BankApp | Створення картки депозиту DepositID=21 Name=PUMB Deposit 1
+2025-11-11 02:14:07 | INFO  | BankApp | Створення картки депозиту DepositID=22 Name=PUMB Deposit 2
+2025-11-11 02:16:03 | INFO  | BankApp | Спроба відкриття депозиту DepositID=5 для користувача UserID=1
+2025-11-11 02:16:03 | INFO  | BankApp | Депозит DepositID=5 успішно відкрито для користувача UserID=1
+2025-11-11 02:16:03 | INFO  | BankApp | Показ алерту: Успіх - Депозит успішно відкрито!
+2025-11-11 02:16:22 | INFO  | BankApp | Користувач виконав пошук депозитів: 'якийсь депчик'
+2025-11-11 02:16:22 | INFO  | BankApp | Знайдено 0 депозитів за запитом 'якийсь депчик'
+2025-11-11 02:16:22 | WARN  | BankApp | Депозити не знайдені для запиту 'якийсь депчик'
+2025-11-11 02:16:43 | INFO  | BankApp | Сортування депозитів за назвою
+2025-11-11 02:16:43 | INFO  | BankApp | Створення картки депозиту DepositID=11 Name=Alfa Deposit 1
+2025-11-11 02:16:43 | INFO  | BankApp | Створення картки депозиту DepositID=12 Name=Alfa Deposit 2
+2025-11-11 02:16:43 | INFO  | BankApp | Створення картки депозиту DepositID=13 Name=CreditAgricole Deposit 1
+2025-11-11 02:16:43 | INFO  | BankApp | Створення картки депозиту DepositID=14 Name=CreditAgricole Deposit 2
+2025-11-11 02:16:43 | INFO  | BankApp | Створення картки депозиту DepositID=19 Name=Kredo Deposit 1
+2025-11-11 02:16:43 | INFO  | BankApp | Створення картки депозиту DepositID=20 Name=Kredo Deposit 2
+2025-11-11 02:16:43 | INFO  | BankApp | Створення картки депозиту DepositID=3 Name=Monobank Deposit 1
+2025-11-11 02:16:43 | INFO  | BankApp | Створення картки депозиту DepositID=4 Name=Monobank Deposit 2
+2025-11-11 02:16:43 | INFO  | BankApp | Створення картки депозиту DepositID=5 Name=Oschad Deposit 1
+2025-11-11 02:16:43 | INFO  | BankApp | Створення картки депозиту DepositID=6 Name=Oschad Deposit 2
+2025-11-11 02:16:43 | INFO  | BankApp | Створення картки депозиту DepositID=1 Name=Privat Deposit 1
+2025-11-11 02:16:43 | INFO  | BankApp | Створення картки депозиту DepositID=2 Name=Privat Deposit 2
+2025-11-11 02:16:43 | INFO  | BankApp | Створення картки депозиту DepositID=17 Name=ProCredit Deposit 1
+2025-11-11 02:16:44 | INFO  | BankApp | Створення картки депозиту DepositID=18 Name=ProCredit Deposit 2
+2025-11-11 02:16:44 | INFO  | BankApp | Створення картки депозиту DepositID=21 Name=PUMB Deposit 1
+2025-11-11 02:16:44 | INFO  | BankApp | Створення картки депозиту DepositID=22 Name=PUMB Deposit 2
+2025-11-11 02:16:44 | INFO  | BankApp | Створення картки депозиту DepositID=7 Name=Raiffeisen Deposit 1
+2025-11-11 02:16:44 | INFO  | BankApp | Створення картки депозиту DepositID=8 Name=Raiffeisen Deposit 2
+2025-11-11 02:16:44 | INFO  | BankApp | Створення картки депозиту DepositID=9 Name=Ukrsib Deposit 1
+2025-11-11 02:16:44 | INFO  | BankApp | Створення картки депозиту DepositID=10 Name=Ukrsib Deposit 2
+2025-11-11 02:17:29 | INFO  | BankApp | Натиснута кнопка Назад, повернення до попередньої панелі
+2025-11-11 02:17:39 | INFO  | BankApp | Відкрито профіль користувача: user1
+2025-11-11 02:17:39 | INFO  | BankApp | Відкрито сторінку профілю користувача
+2025-11-11 02:17:39 | INFO  | BankApp | Завантажено 10 депозитів користувача user1 з кешу
+2025-11-11 02:17:39 | INFO  | BankApp | Відображаємо 10 відкритих депозитів для користувача user1
+2025-11-11 02:18:28 | INFO  | BankApp | Завантажено 20 банків з кешу
+2025-11-11 02:18:28 | INFO  | BankApp | Пошук банків за запитом '' відображено 20 результатів
+2025-11-11 02:18:28 | INFO  | BankApp | Відкрито сторінку банків
+2025-11-11 02:18:34 | INFO  | BankApp | Натиснуто кнопку 'Застосувати' для пошуку банків із запитом 'лохбанк'
+2025-11-11 02:18:34 | INFO  | BankApp | Пошук банків за запитом 'лохбанк' не дав результатів
+2025-11-11 02:19:12 | INFO  | BankApp | Натиснута кнопка Назад, повернення до попередньої панелі
+2025-11-11 02:19:13 | INFO  | BankApp | Натиснута кнопка Назад, повернення до попередньої панелі
+2025-11-11 02:50:55 | INFO  | BankApp | Програма запущена
+2025-11-11 02:50:55 | ERROR | BankApp | 🚨 ТЕСТ: Критична помилка в банківському додатку!
+java.lang.RuntimeException: Симуляція збою бази даних
+	at AppComponents.BankApp.start(BankApp.java:66) [classes/:?]
+	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$9(LauncherImpl.java:847) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$12(PlatformImpl.java:484) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$10(PlatformImpl.java:457) [javafx-graphics-17.0.2-win.jar:?]
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:138) [?:?]
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$11(PlatformImpl.java:456) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:96) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:184) [javafx-graphics-17.0.2-win.jar:?]
+	at java.base/java.lang.Thread.run(Thread.java:1447) [?:?]
+2025-11-11 02:50:55 | INFO  | BankApp | Primary stage встановлено
+2025-11-11 02:50:55 | INFO  | BankApp | Primary stage налаштований: resizable=false, title=DepDepDeposit
+2025-11-11 02:50:55 | INFO  | BankApp | Створено rootPane
+2025-11-11 02:50:55 | INFO  | BankApp | Застосовано стиль до rootPane
+2025-11-11 02:50:55 | INFO  | BankApp | Створюємо панель реєстрації
+2025-11-11 02:50:55 | INFO  | BankApp | GridPane створено та стилізовано
+2025-11-11 02:50:55 | INFO  | BankApp | Додано заголовок панелі реєстрації
+2025-11-11 02:50:55 | INFO  | BankApp | Панель реєстрації готова
+2025-11-11 02:50:55 | INFO  | BankApp | Створено registerRoot через createRegisterPane()
+2025-11-11 02:50:55 | INFO  | BankApp | registerRoot додано до center rootPane
+2025-11-11 02:50:55 | INFO  | BankApp | Налаштовано padding і border rootPane
+2025-11-11 02:50:55 | INFO  | BankApp | FadeTransition для rootPane запущено
+2025-11-11 02:50:56 | INFO  | BankApp | Сцена встановлена і primaryStage показано
+2025-11-11 02:59:46 | INFO  | BankApp | Програма запущена
+2025-11-11 02:59:46 | ERROR | BankApp | 🚨 ТЕСТ: Критична помилка в банківському додатку!
+java.lang.RuntimeException: Симуляція збою бази даних
+	at AppComponents.BankApp.start(BankApp.java:66) [classes/:?]
+	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$9(LauncherImpl.java:847) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$12(PlatformImpl.java:484) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$10(PlatformImpl.java:457) [javafx-graphics-17.0.2-win.jar:?]
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:138) [?:?]
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$11(PlatformImpl.java:456) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:96) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:184) [javafx-graphics-17.0.2-win.jar:?]
+	at java.base/java.lang.Thread.run(Thread.java:1447) [?:?]
+2025-11-11 02:59:47 | INFO  | BankApp | Primary stage встановлено
+2025-11-11 02:59:47 | INFO  | BankApp | Primary stage налаштований: resizable=false, title=DepDepDeposit
+2025-11-11 02:59:47 | INFO  | BankApp | Створено rootPane
+2025-11-11 02:59:47 | INFO  | BankApp | Застосовано стиль до rootPane
+2025-11-11 02:59:47 | INFO  | BankApp | Створюємо панель реєстрації
+2025-11-11 02:59:47 | INFO  | BankApp | GridPane створено та стилізовано
+2025-11-11 02:59:47 | INFO  | BankApp | Додано заголовок панелі реєстрації
+2025-11-11 02:59:47 | INFO  | BankApp | Панель реєстрації готова
+2025-11-11 02:59:47 | INFO  | BankApp | Створено registerRoot через createRegisterPane()
+2025-11-11 02:59:47 | INFO  | BankApp | registerRoot додано до center rootPane
+2025-11-11 02:59:47 | INFO  | BankApp | Налаштовано padding і border rootPane
+2025-11-11 02:59:47 | INFO  | BankApp | FadeTransition для rootPane запущено
+2025-11-11 02:59:47 | INFO  | BankApp | Сцена встановлена і primaryStage показано
+2025-11-11 03:00:52 | INFO  | BankApp | Програма запущена
+2025-11-11 03:00:52 | ERROR | BankApp | 🚨 ТЕСТ: Критична помилка в банківському додатку!
+java.lang.RuntimeException: Симуляція збою бази даних
+	at AppComponents.BankApp.start(BankApp.java:66) [classes/:?]
+	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$9(LauncherImpl.java:847) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$12(PlatformImpl.java:484) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$10(PlatformImpl.java:457) [javafx-graphics-17.0.2-win.jar:?]
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:138) [?:?]
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$11(PlatformImpl.java:456) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:96) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:184) [javafx-graphics-17.0.2-win.jar:?]
+	at java.base/java.lang.Thread.run(Thread.java:1447) [?:?]
+2025-11-11 03:00:52 | INFO  | BankApp | Primary stage встановлено
+2025-11-11 03:00:52 | INFO  | BankApp | Primary stage налаштований: resizable=false, title=DepDepDeposit
+2025-11-11 03:00:52 | INFO  | BankApp | Створено rootPane
+2025-11-11 03:00:52 | INFO  | BankApp | Застосовано стиль до rootPane
+2025-11-11 03:00:52 | INFO  | BankApp | Створюємо панель реєстрації
+2025-11-11 03:00:52 | INFO  | BankApp | GridPane створено та стилізовано
+2025-11-11 03:00:52 | INFO  | BankApp | Додано заголовок панелі реєстрації
+2025-11-11 03:00:52 | INFO  | BankApp | Панель реєстрації готова
+2025-11-11 03:00:52 | INFO  | BankApp | Створено registerRoot через createRegisterPane()
+2025-11-11 03:00:52 | INFO  | BankApp | registerRoot додано до center rootPane
+2025-11-11 03:00:52 | INFO  | BankApp | Налаштовано padding і border rootPane
+2025-11-11 03:00:52 | INFO  | BankApp | FadeTransition для rootPane запущено
+2025-11-11 03:00:53 | INFO  | BankApp | Сцена встановлена і primaryStage показано
+2025-11-11 03:03:33 | INFO  | BankApp | Програма запущена
+2025-11-11 03:03:33 | ERROR | BankApp | 🚨 ТЕСТ: Критична помилка в банківському додатку!
+java.lang.RuntimeException: Симуляція збою бази даних
+	at AppComponents.BankApp.start(BankApp.java:66) [classes/:?]
+	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$9(LauncherImpl.java:847) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$12(PlatformImpl.java:484) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$10(PlatformImpl.java:457) [javafx-graphics-17.0.2-win.jar:?]
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:138) [?:?]
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$11(PlatformImpl.java:456) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:96) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:184) [javafx-graphics-17.0.2-win.jar:?]
+	at java.base/java.lang.Thread.run(Thread.java:1447) [?:?]
+2025-11-11 03:03:33 | INFO  | BankApp | Primary stage встановлено
+2025-11-11 03:03:33 | INFO  | BankApp | Primary stage налаштований: resizable=false, title=DepDepDeposit
+2025-11-11 03:03:33 | INFO  | BankApp | Створено rootPane
+2025-11-11 03:03:33 | INFO  | BankApp | Застосовано стиль до rootPane
+2025-11-11 03:03:33 | INFO  | BankApp | Створюємо панель реєстрації
+2025-11-11 03:03:33 | INFO  | BankApp | GridPane створено та стилізовано
+2025-11-11 03:03:33 | INFO  | BankApp | Додано заголовок панелі реєстрації
+2025-11-11 03:03:33 | INFO  | BankApp | Панель реєстрації готова
+2025-11-11 03:03:33 | INFO  | BankApp | Створено registerRoot через createRegisterPane()
+2025-11-11 03:03:33 | INFO  | BankApp | registerRoot додано до center rootPane
+2025-11-11 03:03:33 | INFO  | BankApp | Налаштовано padding і border rootPane
+2025-11-11 03:03:33 | INFO  | BankApp | FadeTransition для rootPane запущено
+2025-11-11 03:03:34 | INFO  | BankApp | Сцена встановлена і primaryStage показано
+2025-11-11 03:04:14 | INFO  | BankApp | Програма запущена
+2025-11-11 03:04:14 | ERROR | BankApp | 🚨 ТЕСТ: Критична помилка в банківському додатку!
+java.lang.RuntimeException: Симуляція збою бази даних
+	at AppComponents.BankApp.start(BankApp.java:66) [classes/:?]
+	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$9(LauncherImpl.java:847) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$12(PlatformImpl.java:484) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$10(PlatformImpl.java:457) [javafx-graphics-17.0.2-win.jar:?]
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:138) [?:?]
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$11(PlatformImpl.java:456) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:96) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:184) [javafx-graphics-17.0.2-win.jar:?]
+	at java.base/java.lang.Thread.run(Thread.java:1447) [?:?]
+2025-11-11 03:04:14 | INFO  | BankApp | Primary stage встановлено
+2025-11-11 03:04:14 | INFO  | BankApp | Primary stage налаштований: resizable=false, title=DepDepDeposit
+2025-11-11 03:04:14 | INFO  | BankApp | Створено rootPane
+2025-11-11 03:04:14 | INFO  | BankApp | Застосовано стиль до rootPane
+2025-11-11 03:04:14 | INFO  | BankApp | Створюємо панель реєстрації
+2025-11-11 03:04:14 | INFO  | BankApp | GridPane створено та стилізовано
+2025-11-11 03:04:14 | INFO  | BankApp | Додано заголовок панелі реєстрації
+2025-11-11 03:04:15 | INFO  | BankApp | Панель реєстрації готова
+2025-11-11 03:04:15 | INFO  | BankApp | Створено registerRoot через createRegisterPane()
+2025-11-11 03:04:15 | INFO  | BankApp | registerRoot додано до center rootPane
+2025-11-11 03:04:15 | INFO  | BankApp | Налаштовано padding і border rootPane
+2025-11-11 03:04:15 | INFO  | BankApp | FadeTransition для rootPane запущено
+2025-11-11 03:04:15 | INFO  | BankApp | Сцена встановлена і primaryStage показано
+2025-11-11 03:06:16 | INFO  | BankApp | Програма запущена
+2025-11-11 03:06:16 | ERROR | BankApp | CRITICAL ERROR: Application startup failed
+java.lang.RuntimeException: 🚨 DATABASE CONNECTION FAILED: Cannot connect to Supabase
+	at AppComponents.BankApp.start(BankApp.java:69) [classes/:?]
+	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$9(LauncherImpl.java:847) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$12(PlatformImpl.java:484) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$10(PlatformImpl.java:457) [javafx-graphics-17.0.2-win.jar:?]
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:138) [?:?]
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$11(PlatformImpl.java:456) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:96) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:184) [javafx-graphics-17.0.2-win.jar:?]
+	at java.base/java.lang.Thread.run(Thread.java:1447) [?:?]
+2025-11-11 03:06:16 | INFO  | BankApp | Primary stage встановлено
+2025-11-11 03:06:16 | INFO  | BankApp | Primary stage налаштований: resizable=false, title=DepDepDeposit
+2025-11-11 03:06:17 | INFO  | BankApp | Створено rootPane
+2025-11-11 03:06:17 | INFO  | BankApp | Застосовано стиль до rootPane
+2025-11-11 03:06:17 | INFO  | BankApp | Створюємо панель реєстрації
+2025-11-11 03:06:17 | INFO  | BankApp | GridPane створено та стилізовано
+2025-11-11 03:06:17 | INFO  | BankApp | Додано заголовок панелі реєстрації
+2025-11-11 03:06:17 | INFO  | BankApp | Панель реєстрації готова
+2025-11-11 03:06:17 | INFO  | BankApp | Створено registerRoot через createRegisterPane()
+2025-11-11 03:06:17 | INFO  | BankApp | registerRoot додано до center rootPane
+2025-11-11 03:06:17 | INFO  | BankApp | Налаштовано padding і border rootPane
+2025-11-11 03:06:17 | INFO  | BankApp | FadeTransition для rootPane запущено
+2025-11-11 03:06:17 | INFO  | BankApp | Сцена встановлена і primaryStage показано
+2025-11-11 03:06:38 | INFO  | BankApp | Програма запущена
+2025-11-11 03:06:38 | ERROR | BankApp | CRITICAL ERROR: Application startup failed
+java.lang.RuntimeException: 🚨 DATABASE CONNECTION FAILED: Cannot connect to Supabase
+	at AppComponents.BankApp.start(BankApp.java:69) [classes/:?]
+	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$9(LauncherImpl.java:847) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$12(PlatformImpl.java:484) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$10(PlatformImpl.java:457) [javafx-graphics-17.0.2-win.jar:?]
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:138) [?:?]
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$11(PlatformImpl.java:456) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:96) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) [javafx-graphics-17.0.2-win.jar:?]
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:184) [javafx-graphics-17.0.2-win.jar:?]
+	at java.base/java.lang.Thread.run(Thread.java:1447) [?:?]
+2025-11-11 03:06:38 | INFO  | BankApp | Primary stage встановлено
+2025-11-11 03:06:38 | INFO  | BankApp | Primary stage налаштований: resizable=false, title=DepDepDeposit
+2025-11-11 03:06:38 | INFO  | BankApp | Створено rootPane
+2025-11-11 03:06:38 | INFO  | BankApp | Застосовано стиль до rootPane
+2025-11-11 03:06:38 | INFO  | BankApp | Створюємо панель реєстрації
+2025-11-11 03:06:38 | INFO  | BankApp | GridPane створено та стилізовано
+2025-11-11 03:06:38 | INFO  | BankApp | Додано заголовок панелі реєстрації
+2025-11-11 03:06:38 | INFO  | BankApp | Панель реєстрації готова
+2025-11-11 03:06:38 | INFO  | BankApp | Створено registerRoot через createRegisterPane()
+2025-11-11 03:06:38 | INFO  | BankApp | registerRoot додано до center rootPane
+2025-11-11 03:06:38 | INFO  | BankApp | Налаштовано padding і border rootPane
+2025-11-11 03:06:38 | INFO  | BankApp | FadeTransition для rootPane запущено
+2025-11-11 03:06:39 | INFO  | BankApp | Сцена встановлена і primaryStage показано
